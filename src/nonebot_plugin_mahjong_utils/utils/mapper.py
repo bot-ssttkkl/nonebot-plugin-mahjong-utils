@@ -1,6 +1,6 @@
 from collections import defaultdict
 from io import StringIO
-from typing import TextIO, Optional
+from typing import TextIO, Optional, Tuple
 
 from mahjong_utils.hora import Hora
 from mahjong_utils.models.hand import Hand, RegularHand
@@ -74,6 +74,48 @@ wind_mapping = {
     Wind.west: "西",
     Wind.north: "北"
 }
+
+
+def map_han_hu(io: TextIO,
+               parent_point: Optional[Tuple[int, int]],
+               child_point: Optional[Tuple[int, int, int]]):
+    if parent_point is not None:
+        parent_ron, parent_tsumo = parent_point
+        io.write("亲家和牌时：")
+        if parent_tsumo:
+            io.write("自摸")
+            io.write(str(parent_tsumo * 3))
+            io.write(' (')
+            io.write(str(parent_tsumo))
+            io.write(" ALL)")
+
+        if parent_tsumo and parent_ron:
+            io.write("，")
+
+        if parent_ron:
+            io.write("荣和")
+            io.write(str(parent_ron))
+        io.write("\n")
+
+    if child_point is not None:
+        child_ron, child_tsumo_parent, child_tsumo_child = child_point
+        io.write("子家和牌时：")
+        if child_tsumo_parent:
+            io.write("自摸")
+            io.write(str(child_tsumo_parent + child_tsumo_child * 2))
+            io.write(' (')
+            io.write(str(child_tsumo_parent))
+            io.write(" ")
+            io.write(str(child_tsumo_child))
+            io.write(")")
+
+        if child_tsumo_parent and child_ron:
+            io.write("，")
+
+        if child_ron:
+            io.write("荣和")
+            io.write(str(child_ron))
+        io.write("\n")
 
 
 def map_hand(io: TextIO, hand: Hand, *, got: Optional[Tile] = None):
@@ -211,23 +253,13 @@ def map_hora(io: TextIO, hora: Hora, *, got: Optional[Tile] = None):
     io.write('\n')
 
     if hora.hand.self_wind == Wind.east or hora.hand.self_wind is None:
-        parent_ron, parent_tsumo = hora.parent_point
-        io.write("亲家和牌时：自摸")
-        io.write(str(parent_tsumo * 3))
-        io.write(' (')
-        io.write(str(parent_tsumo))
-        io.write(" ALL)，荣和")
-        io.write(str(parent_ron))
-        io.write("\n")
+        parent_point = hora.parent_point
+    else:
+        parent_point = None
 
     if hora.hand.self_wind != Wind.east or hora.hand.self_wind is None:
-        child_ron, child_tsumo_parent, child_tsumo_child = hora.child_point
-        io.write("子家和牌时：自摸")
-        io.write(str(child_tsumo_parent + child_tsumo_child * 2))
-        io.write(' (')
-        io.write(str(child_tsumo_parent))
-        io.write(" ")
-        io.write(str(child_tsumo_child))
-        io.write(")，荣和")
-        io.write(str(child_ron))
-        io.write("\n")
+        child_point = hora.child_point
+    else:
+        child_point = None
+
+    map_han_hu(io, parent_point, child_point)

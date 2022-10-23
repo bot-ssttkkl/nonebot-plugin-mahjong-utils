@@ -10,19 +10,19 @@ from nonebot.internal.adapter import Event
 from nonebot.internal.matcher import Matcher
 from nonebot.typing import T_State
 
-from nonebot_plugin_mahjong_utils.handle_error import handle_error
-from nonebot_plugin_mahjong_utils.mapper import map_shanten_result, map_hora
-from nonebot_plugin_mahjong_utils.parser import try_parse_wind, try_parse_extra_yaku
+from nonebot_plugin_mahjong_utils.interceptors.handle_error import handle_error
+from nonebot_plugin_mahjong_utils.utils.mapper import map_shanten_result, map_hora
+from nonebot_plugin_mahjong_utils.utils.parser import try_parse_wind, try_parse_extra_yaku
 
 tiles_pattern = r"([0-9]+(m|p|s|z){1})+"
 furo_pattern = r"[0-9]+(m|p|s|z){1}"
 
-tiles_matcher = on_regex(rf"^{tiles_pattern}(\s{furo_pattern})*")
+tiles_sniffer = on_regex(rf"^{tiles_pattern}(\s{furo_pattern})*")
 
 
-@tiles_matcher.handle()
-@handle_error(tiles_matcher)
-async def sniffer(bot: Bot, event: Event, state: T_State, matcher: Matcher):
+@tiles_sniffer.handle()
+@handle_error(tiles_sniffer)
+async def handle(bot: Bot, event: Event, state: T_State, matcher: Matcher):
     text = event.get_plaintext().split(' ')
 
     tiles = parse_tiles(text[0])

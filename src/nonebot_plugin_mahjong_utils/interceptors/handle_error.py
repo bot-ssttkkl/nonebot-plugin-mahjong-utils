@@ -5,7 +5,7 @@ from nonebot import logger
 from nonebot.exception import MatcherException
 from nonebot.internal.matcher import Matcher
 
-from .errors import BadRequestError
+from nonebot_plugin_mahjong_utils.errors import BadRequestError
 
 
 def handle_error(matcher: Type[Matcher]):
