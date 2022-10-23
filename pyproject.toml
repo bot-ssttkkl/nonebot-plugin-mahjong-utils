@@ -3,13 +3,22 @@ name = "nonebot-plugin-mahjong-utils"
 version = "0.1.0"
 description = ""
 authors = ["ssttkkl <huang.wen.long@hotmail.com>"]
-license = "MIT"
 readme = "README.md"
-packages = [{include = "nonebot_plugin_mahjong_utils"}]
+license = "MIT"
+repository = "https://github.com/ssttkkl/nonebot-plugin-mahjong-utils"
+packages = [
+    { include = "nonebot_plugin_mahjong_utils", from = "src" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+nonebot2 = "^2.0.0rc1"
+mahjong-utils = "^0.1.0a4"
 
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^5.0.4"
+nb-cli = "^0.6.7"
 
 [build-system]
 requires = ["poetry-core"]

@@ -5,7 +5,7 @@ from mahjong_utils.yaku import Yaku
 from mahjong_utils.yaku.extra import *
 
 
-def parse_wind(text: str) -> Wind:
+def try_parse_wind(text: str) -> Optional[Wind]:
     if text == "东":
         return Wind.east
     if text == "南":
@@ -14,6 +14,7 @@ def parse_wind(text: str) -> Wind:
         return Wind.west
     if text == "北":
         return Wind.north
+    return None
 
 
 extra_yaku_reversed_mapping = {
