@@ -21,7 +21,7 @@ tiles_sniffer = on_regex(rf"^{tiles_pattern}(\s{furo_pattern})*")
 
 
 @tiles_sniffer.handle()
-@handle_error(tiles_sniffer)
+@handle_error(tiles_sniffer, True)
 async def handle(bot: Bot, event: Event, state: T_State, matcher: Matcher):
     text = event.get_plaintext().split(' ')
 
@@ -54,6 +54,11 @@ async def handle(bot: Bot, event: Event, state: T_State, matcher: Matcher):
             if yaku is not None:
                 extra_yaku.add(yaku)
 
+    if len(tiles) % 3 == 2:
+        got = tiles[-1]
+    else:
+        got = None
+
     result = shanten(tiles, furo)
     with StringIO() as sio:
         if result.shanten == -1:
@@ -63,9 +68,9 @@ async def handle(bot: Bot, event: Event, state: T_State, matcher: Matcher):
                 dora=dora, self_wind=self_wind, round_wind=round_wind,
                 extra_yaku=extra_yaku
             )
-            map_hora(sio, hora)
+            map_hora(sio, hora, got=got)
         else:
-            map_shanten_result(sio, result)
+            map_shanten_result(sio, result, got=got)
 
         msg = sio.getvalue().strip()
         await matcher.send(msg)
