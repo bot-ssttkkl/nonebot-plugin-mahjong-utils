@@ -47,7 +47,7 @@ yaku_mapping = {
     kokushi: "国士无双",
     suanko: "四暗刻",
     daisangen: "大三元",
-    tsuiso: "大三元",
+    tsuiso: "字一色",
     shousushi: "小四喜",
     lyuiso: "绿一色",
     chinroto: "清老头",
@@ -120,6 +120,12 @@ def map_han_hu(io: TextIO,
 
 def map_hand(io: TextIO, hand: Hand, *, got: Optional[Tile] = None):
     tiles = sorted(hand.tiles)
+
+    if isinstance(hand, RegularHand):
+        for fr in hand.furo:
+            for t in fr.tiles:
+                tiles.remove(t)
+
     if got is not None:
         tiles.remove(got)
         tiles.append(got)
@@ -127,7 +133,7 @@ def map_hand(io: TextIO, hand: Hand, *, got: Optional[Tile] = None):
     io.write(tiles_text(tiles))
     io.write(' ')
 
-    if isinstance(hand, RegularHand) and len(hand.furo) > 0:
+    if isinstance(hand, RegularHand):
         for fr in hand.furo:
             io.write(str(fr))
             io.write(' ')
