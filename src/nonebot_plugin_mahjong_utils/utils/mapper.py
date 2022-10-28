@@ -1,5 +1,4 @@
 from collections import defaultdict
-from io import StringIO
 from typing import TextIO, Optional, Tuple
 
 from mahjong_utils.hora import Hora
@@ -185,11 +184,37 @@ def map_shanten_result(io: TextIO, result: ShantenResult, *, got: Optional[Tile]
             io.write("张)\n")
 
 
-def map_hora(io: TextIO, hora: Hora, *, got: Optional[Tile] = None):
-    map_hand(io, hora.hand, got=got)
+def map_han_hu_text(io: TextIO, han: int, hu: int):
+    io.write(str(han))
+    io.write("番")
+    io.write(str(hu))
+    io.write("符")
 
-    if hora.hand.tsumo:
-        io.write("自摸 ")
+    han_type = None
+    if han >= 13:
+        han_type = "累计役满"
+    elif han >= 11:
+        han_type = "三倍满"
+    elif han >= 8:
+        han_type = "倍满"
+    elif han >= 6:
+        han_type = "跳满"
+    elif han >= 5 or han == 4 and hu >= 40:
+        han_type = "满贯"
+
+    if han_type is not None:
+        io.write("  ")
+        io.write(han_type)
+
+
+def map_yakuman_text(io: TextIO, yakuman: int):
+    io.write(num_mapping[yakuman])
+    io.write("倍役满")
+
+
+def map_hora(io: TextIO, hora_ron: Hora, hora_tsumo: Hora, *, got: Optional[Tile] = None):
+    hora = hora_ron
+    map_hand(io, hora.hand, got=got)
 
     if hora.dora > 0:
         io.write("dora")
@@ -207,64 +232,104 @@ def map_hora(io: TextIO, hora: Hora, *, got: Optional[Tile] = None):
 
     io.write('\n')
 
-    if hora.han == 0:
+    if hora_tsumo.han == hora_ron.han == 0:
         io.write("和牌，但是无役")
         return
 
     if hora.hand.menzen:
-        ordered_yaku = sorted(hora.yaku, key=lambda y: y.han, reverse=True)
+        # 保证排序的稳定性（单测需要）
+        ordered_yaku = sorted(hora_ron.yaku | hora_tsumo.yaku, key=lambda y: (y.han, y), reverse=True)
     else:
-        ordered_yaku = sorted(hora.yaku, key=lambda y: y.han - y.furo_loss, reverse=True)
+        ordered_yaku = sorted(hora_ron.yaku | hora_tsumo.yaku, key=lambda y: (y.han - y.furo_loss, y), reverse=True)
 
-    yakuman = 0
+    yakuman_tsumo = 0
+    yakuman_ron = 0
 
-    with StringIO() as yaku_io:
-        for yaku in ordered_yaku:
-            yaku_io.write(yaku_mapping[yaku])
-            yaku_io.write('\t')
-            if yaku.is_yakuman:
-                if yaku.han == 13:
-                    yaku_io.write("役满\n")
-                    yakuman += 1
-                else:
-                    yaku_io.write("两倍役满\n")
-                    yakuman += 2
+    for yaku in ordered_yaku:
+        allow_ron = yaku in hora_ron.yaku
+        allow_tsumo = yaku in hora_tsumo.yaku
+
+        io.write(yaku_mapping[yaku])
+        io.write('  ')
+        if yaku.is_yakuman:
+            if yaku.han == 13:
+                io.write("役满")
+                if allow_ron:
+                    yakuman_ron += 1
+                if allow_tsumo:
+                    yakuman_tsumo += 1
             else:
-                if hora.hand.menzen:
-                    yaku_io.write(str(yaku.han))
-                else:
-                    yaku_io.write(str(yaku.han - yaku.furo_loss))
-                yaku_io.write("番\n")
+                io.write("两倍役满")
+                if allow_ron:
+                    yakuman_ron += 2
+                if allow_tsumo:
+                    yakuman_tsumo += 2
+        else:
+            if hora.hand.menzen:
+                io.write(str(yaku.han))
+            else:
+                io.write(str(yaku.han - yaku.furo_loss))
+            io.write("番")
 
-        if yakuman == 0 and hora.dora > 0:
-            yaku_io.write("宝牌\t")
-            yaku_io.write(str(hora.dora))
-            yaku_io.write("番\n")
+        if allow_ron and not allow_tsumo:
+            io.write("  （荣和限定）")
+        if not allow_ron and allow_tsumo:
+            io.write("  （自摸限定）")
 
-        yaku_text = yaku_io.getvalue()
+        io.write('\n')
 
-    io.write("和牌\t")
-    if yakuman == 0:
-        if hora.han >= 13:
-            io.write("累计役满\t")
-        io.write(str(hora.han))
+    if yakuman_ron == 0 and hora.dora > 0:
+        io.write("宝牌  ")
+        io.write(str(hora.dora))
         io.write("番")
-        io.write(str(hora.hand.hu))
-        io.write("符\n\n")
-    else:
-        io.write(num_mapping[yakuman])
-        io.write("倍役满\n\n")
 
-    io.write(yaku_text)
+        if yakuman_tsumo != 0:
+            # 自摸役满，荣和非役满的情况
+            io.write("  （荣和限定）")
+
+        io.write('\n')
+
     io.write('\n')
 
+    if yakuman_ron == yakuman_tsumo:
+        if yakuman_ron > 0:
+            map_yakuman_text(io, yakuman_ron)
+        else:
+            if hora_ron.han == hora_tsumo.han and hora_ron.hand.hu == hora_tsumo.hand.hu:
+                map_han_hu_text(io, hora.han, hora.hand.hu)
+            else:
+                io.write("自摸：")
+                map_han_hu_text(io, hora_tsumo.han, hora_tsumo.hand.hu)
+                io.write("\n荣和：")
+                map_han_hu_text(io, hora_ron.han, hora_ron.hand.hu)
+    else:
+        io.write("自摸：")
+        if yakuman_tsumo > 0:
+            map_yakuman_text(io, yakuman_tsumo)
+        else:
+            map_han_hu_text(io, hora_tsumo.han, hora_tsumo.hand.hu)
+
+        io.write("\n荣和：")
+        if yakuman_ron > 0:
+            map_yakuman_text(io, yakuman_ron)
+        else:
+            map_han_hu_text(io, hora_ron.han, hora_ron.hand.hu)
+
+    io.write("\n\n")
+
     if hora.hand.self_wind == Wind.east or hora.hand.self_wind is None:
-        parent_point = hora.parent_point
+        if hora_tsumo.parent_point == hora_ron.parent_point:
+            parent_point = hora.parent_point
+        else:
+            parent_point = hora_ron.parent_point[0], hora_tsumo.parent_point[1]
     else:
         parent_point = None
 
     if hora.hand.self_wind != Wind.east or hora.hand.self_wind is None:
-        child_point = hora.child_point
+        if hora_tsumo.child_point == hora_ron.child_point:
+            child_point = hora.child_point
+        else:
+            child_point = hora_ron.child_point[0], hora_tsumo.child_point[1], hora_tsumo.child_point[2]
     else:
         child_point = None
 

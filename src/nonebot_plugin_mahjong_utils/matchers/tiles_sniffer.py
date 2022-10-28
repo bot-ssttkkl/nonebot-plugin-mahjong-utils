@@ -36,9 +36,7 @@ async def handle(bot: Bot, event: Event, state: T_State, matcher: Matcher):
     for t in text[1:]:
         if re.match(furo_pattern, t):
             furo.append(parse_furo(t))
-        elif t == "自摸":
-            tsumo = True
-        elif t.startswith("dora"):
+        elif len(t) > 4 and t[:4].lower() == "dora":
             dora = int(t[len("dora"):])
         elif t.startswith("自风"):
             if self_wind is None:
@@ -63,12 +61,17 @@ async def handle(bot: Bot, event: Event, state: T_State, matcher: Matcher):
     with StringIO() as sio:
         if result.shanten == -1:
             # 分析和牌
-            hora = build_hora_from_shanten_result(
-                result, tiles[-1], tsumo,
+            hora_ron = build_hora_from_shanten_result(
+                result, tiles[-1], False,
                 dora=dora, self_wind=self_wind, round_wind=round_wind,
                 extra_yaku=extra_yaku
             )
-            map_hora(sio, hora, got=got)
+            hora_tsumo = build_hora_from_shanten_result(
+                result, tiles[-1], True,
+                dora=dora, self_wind=self_wind, round_wind=round_wind,
+                extra_yaku=extra_yaku
+            )
+            map_hora(sio, hora_ron, hora_tsumo, got=got)
         else:
             map_shanten_result(sio, result, got=got)
 
