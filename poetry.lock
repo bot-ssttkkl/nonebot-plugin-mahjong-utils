@@ -284,7 +284,7 @@ dev = ["Sphinx (>=4.1.1)", "black (>=19.10b0)", "colorama (>=0.3.4)", "docutils 
 
 [[package]]
 name = "mahjong-utils"
-version = "0.1.0a7"
+version = "0.1.0a9"
 description = ""
 category = "main"
 optional = false
@@ -862,8 +862,8 @@ loguru = [
     {file = "loguru-0.6.0.tar.gz", hash = "sha256:066bd06758d0a513e9836fd9c6b5a75bfb3fd36841f4b996bc60b547a309d41c"},
 ]
 mahjong-utils = [
-    {file = "mahjong_utils-0.1.0a7-py3-none-any.whl", hash = "sha256:c67c13fe12f35692dd69d36a60912cd6494659bceb8615d2b00bb80a58f862ff"},
-    {file = "mahjong_utils-0.1.0a7.tar.gz", hash = "sha256:2c872543de330fde4cbfa5788bdb587666144a1aa292e240187069a91fde9e19"},
+    {file = "mahjong_utils-0.1.0a9-py3-none-any.whl", hash = "sha256:2089171bc2e60dad12f38a9c295d229c3dff44e744793f5c98b5ebf029a7ecdb"},
+    {file = "mahjong_utils-0.1.0a9.tar.gz", hash = "sha256:64a0be7329ae8d0056bd98467d3142e8459facc6ea4f47e203cb2d4485847b68"},
 ]
 markupsafe = [
     {file = "MarkupSafe-2.1.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:86b1f75c4e7c2ac2ccdaec2b9022845dbb81880ca318bb7a0a01fbf7813e3812"},
