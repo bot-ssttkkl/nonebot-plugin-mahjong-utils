@@ -8,3 +8,12 @@ nonebot-plugin-mahjong-utils
 
 番符点数查询：
 - 输入x番y符，输出亲家/子家的自摸/荣和得点
+
+## Special Thanks
+
+-  [nonebot/nonebot2](https://github.com/nonebot/nonebot2)
+-  [ssttkkl/mahjong-utils](https://github.com/ssttkkl/mahjong-utils) ~~我谢我自己~~
+
+## LICENSE
+
+MIT
