@@ -57,6 +57,10 @@ async def handle(bot: Bot, event: Event, state: T_State, matcher: Matcher):
     else:
         got = None
 
+    if len(tiles) < 3:
+        # 少于三张牌不进行计算
+        return
+
     result = shanten(tiles, furo)
     with StringIO() as sio:
         if result.shanten == -1:
