@@ -169,7 +169,7 @@ def map_shanten_result(io: TextIO, result: ShantenResult, *, got: Optional[Tile]
             grouped[shanten_after_discard.shanten][discard] = shanten_after_discard
 
         for shanten_num in sorted(grouped.keys()):
-            if result.shanten == 0:
+            if shanten_num == 0:
                 io.write("听牌：\n")
             else:
                 io.write(str(shanten_num))
