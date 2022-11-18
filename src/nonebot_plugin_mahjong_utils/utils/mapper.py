@@ -147,7 +147,9 @@ def map_shanten_result(io: TextIO, result: ShantenResult, *, got: Optional[Tile]
         remaining[t] -= 1
 
     if not result.with_got:
-        if result.shanten == 0:
+        if result.shanten == -1:
+            io.write("和牌\n")
+        elif result.shanten == 0:
             io.write("听牌：\n")
         else:
             io.write(str(result.shanten))
@@ -169,7 +171,10 @@ def map_shanten_result(io: TextIO, result: ShantenResult, *, got: Optional[Tile]
             grouped[shanten_after_discard.shanten][discard] = shanten_after_discard
 
         for shanten_num in sorted(grouped.keys()):
-            if shanten_num == 0:
+            if result.shanten == -1:
+                io.write("和牌\n")
+                break
+            elif shanten_num == 0:
                 io.write("听牌：\n")
             else:
                 io.write(str(shanten_num))
