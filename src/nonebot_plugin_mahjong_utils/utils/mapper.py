@@ -2,7 +2,7 @@ from collections import defaultdict
 from typing import TextIO, Optional, Tuple
 
 from mahjong_utils.hora import Hora
-from mahjong_utils.models.hand import Hand, RegularHand
+from mahjong_utils.models.hand_pattern import HandPattern, RegularHandPattern
 from mahjong_utils.models.tile import tiles_text, Tile
 from mahjong_utils.models.wind import Wind
 from mahjong_utils.shanten import ShantenResult
@@ -117,10 +117,10 @@ def map_han_hu(io: TextIO,
         io.write("\n")
 
 
-def map_hand(io: TextIO, hand: Hand, *, got: Optional[Tile] = None):
+def map_hand(io: TextIO, hand: HandPattern, *, got: Optional[Tile] = None):
     tiles = sorted(hand.tiles)
 
-    if isinstance(hand, RegularHand):
+    if isinstance(hand, RegularHandPattern):
         for fr in hand.furo:
             for t in fr.tiles:
                 tiles.remove(t)
@@ -132,28 +132,27 @@ def map_hand(io: TextIO, hand: Hand, *, got: Optional[Tile] = None):
     io.write(tiles_text(tiles))
     io.write(' ')
 
-    if isinstance(hand, RegularHand):
+    if isinstance(hand, RegularHandPattern):
         for fr in hand.furo:
             io.write(str(fr))
             io.write(' ')
 
 
 def map_shanten_result(io: TextIO, result: ShantenResult, *, got: Optional[Tile] = None):
-    map_hand(io, result.hands[0], got=got)
+    map_hand(io, result.hand.patterns[0], got=got)
     io.write('\n')
 
-    if result.shanten == 0:
-        io.write("听牌")
-    else:
-        io.write("向听数：")
-        io.write(str(result.shanten))
-    io.write("\n")
-
     remaining = defaultdict(lambda: 4)
-    for t in result.hands[0].tiles:
+    for t in result.hand.tiles:
         remaining[t] -= 1
 
-    if result.advance is not None:
+    if not result.with_got:
+        if result.shanten == 0:
+            io.write("听牌：\n")
+        else:
+            io.write(str(result.shanten))
+            io.write("向听：\n")
+
         advance_count = 0
         for t in result.advance:
             advance_count += remaining[t]
@@ -164,24 +163,41 @@ def map_shanten_result(io: TextIO, result: ShantenResult, *, got: Optional[Tile]
         io.write(str(advance_count))
         io.write("张)\n")
     else:
-        ordered = []
-        for discard, advance in result.discard_to_advance.items():
-            advance_count = 0
-            for t in advance:
-                advance_count += remaining[t]
-            ordered.append((discard, advance, advance_count))
+        grouped = defaultdict(dict)
 
-        ordered.sort(key=lambda x: x[2], reverse=True)
+        for discard, shanten_after_discard in result.discard_to_advance.items():
+            grouped[shanten_after_discard.shanten][discard] = shanten_after_discard
 
-        for discard, advance, advance_count in ordered:
-            io.write("打")
-            io.write(str(discard))
-            io.write("\t")
-            io.write("进张：")
-            io.write(tiles_text(sorted(advance)))
-            io.write(" (")
-            io.write(str(advance_count))
-            io.write("张)\n")
+        for shanten_num in sorted(grouped.keys()):
+            if result.shanten == 0:
+                io.write("听牌：\n")
+            else:
+                io.write(str(shanten_num))
+                io.write("向听")
+                if shanten_num != result.shanten:
+                    io.write("（退向）")
+                io.write("：\n")
+
+            ordered = []
+            for discard, shanten_after_discard in grouped[shanten_num].items():
+                advance_count = 0
+                for t in shanten_after_discard.advance:
+                    advance_count += remaining[t]
+                ordered.append((discard, advance_count, shanten_after_discard))
+
+            ordered.sort(key=lambda x: x[1], reverse=True)
+
+            for discard, advance_count, shanten_after_discard in ordered:
+                io.write("打")
+                io.write(str(discard))
+                io.write("  ")
+                io.write("进张：")
+                io.write(tiles_text(sorted(shanten_after_discard.advance)))
+                io.write(" (")
+                io.write(str(advance_count))
+                io.write("张)\n")
+
+            io.write("\n")
 
 
 def map_han_hu_text(io: TextIO, han: int, hu: int):
@@ -214,20 +230,21 @@ def map_yakuman_text(io: TextIO, yakuman: int):
 
 def map_hora(io: TextIO, hora_ron: Hora, hora_tsumo: Hora, *, got: Optional[Tile] = None):
     hora = hora_ron
-    map_hand(io, hora.hand, got=got)
+    map_hand(io, hora.pattern, got=got)
 
     if hora.dora > 0:
         io.write("dora")
         io.write(str(hora.dora))
         io.write(" ")
 
-    if hora.hand.self_wind is not None:
-        io.write(wind_mapping[hora.hand.self_wind])
-        io.write("家 ")
+    if hora.self_wind is not None:
+        io.write("自风")
+        io.write(wind_mapping[hora.self_wind])
+        io.write(" ")
 
-    if hora.hand.round_wind is not None:
+    if hora.round_wind is not None:
         io.write("场风")
-        io.write(wind_mapping[hora.hand.round_wind])
+        io.write(wind_mapping[hora.round_wind])
         io.write(" ")
 
     io.write('\n')
@@ -236,7 +253,7 @@ def map_hora(io: TextIO, hora_ron: Hora, hora_tsumo: Hora, *, got: Optional[Tile
         io.write("和牌，但是无役")
         return
 
-    if hora.hand.menzen:
+    if hora.pattern.menzen:
         # 保证排序的稳定性（单测需要）
         ordered_yaku = sorted(hora_ron.yaku | hora_tsumo.yaku, key=lambda y: (y.han, y), reverse=True)
     else:
@@ -265,7 +282,7 @@ def map_hora(io: TextIO, hora_ron: Hora, hora_tsumo: Hora, *, got: Optional[Tile
                 if allow_tsumo:
                     yakuman_tsumo += 2
         else:
-            if hora.hand.menzen:
+            if hora.pattern.menzen:
                 io.write(str(yaku.han))
             else:
                 io.write(str(yaku.han - yaku.furo_loss))
@@ -295,29 +312,29 @@ def map_hora(io: TextIO, hora_ron: Hora, hora_tsumo: Hora, *, got: Optional[Tile
         if yakuman_ron > 0:
             map_yakuman_text(io, yakuman_ron)
         else:
-            if hora_ron.han == hora_tsumo.han and hora_ron.hand.hu == hora_tsumo.hand.hu:
-                map_han_hu_text(io, hora.han, hora.hand.hu)
+            if hora_ron.han == hora_tsumo.han and hora_ron.hu == hora_tsumo.hu:
+                map_han_hu_text(io, hora.han, hora.hu)
             else:
                 io.write("自摸：")
-                map_han_hu_text(io, hora_tsumo.han, hora_tsumo.hand.hu)
+                map_han_hu_text(io, hora_tsumo.han, hora_tsumo.hu)
                 io.write("\n荣和：")
-                map_han_hu_text(io, hora_ron.han, hora_ron.hand.hu)
+                map_han_hu_text(io, hora_ron.han, hora_ron.hu)
     else:
         io.write("自摸：")
         if yakuman_tsumo > 0:
             map_yakuman_text(io, yakuman_tsumo)
         else:
-            map_han_hu_text(io, hora_tsumo.han, hora_tsumo.hand.hu)
+            map_han_hu_text(io, hora_tsumo.han, hora_tsumo.hu)
 
         io.write("\n荣和：")
         if yakuman_ron > 0:
             map_yakuman_text(io, yakuman_ron)
         else:
-            map_han_hu_text(io, hora_ron.han, hora_ron.hand.hu)
+            map_han_hu_text(io, hora_ron.han, hora_ron.hu)
 
     io.write("\n\n")
 
-    if hora.hand.self_wind == Wind.east or hora.hand.self_wind is None:
+    if hora.self_wind == Wind.east or hora.self_wind is None:
         if hora_tsumo.parent_point == hora_ron.parent_point:
             parent_point = hora.parent_point
         else:
@@ -325,7 +342,7 @@ def map_hora(io: TextIO, hora_ron: Hora, hora_tsumo: Hora, *, got: Optional[Tile
     else:
         parent_point = None
 
-    if hora.hand.self_wind != Wind.east or hora.hand.self_wind is None:
+    if hora.self_wind != Wind.east or hora.self_wind is None:
         if hora_tsumo.child_point == hora_ron.child_point:
             child_point = hora.child_point
         else:
