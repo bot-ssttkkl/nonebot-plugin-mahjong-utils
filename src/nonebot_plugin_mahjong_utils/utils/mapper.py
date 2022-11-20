@@ -167,7 +167,7 @@ def map_shanten_result(io: TextIO, result: ShantenResult, *, got: Optional[Tile]
             io.write(str(result.shanten))
             io.write("向听：\n")
 
-        map_shanten_without_got(io, cast(result.shanten_info, ShantenWithoutGot))
+        map_shanten_without_got(io, cast(ShantenWithoutGot, result.shanten_info))
         io.write("\n")
     else:
         grouped = defaultdict(dict)
