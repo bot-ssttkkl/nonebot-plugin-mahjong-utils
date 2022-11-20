@@ -1,8 +1,9 @@
 from collections import defaultdict
-from typing import TextIO, Optional, Tuple
+from typing import TextIO, Optional, Tuple, cast
 
 from mahjong_utils.hora import Hora
 from mahjong_utils.models.hand_pattern import HandPattern, RegularHandPattern
+from mahjong_utils.models.shanten import ShantenWithoutGot
 from mahjong_utils.models.tile import tiles_text, Tile
 from mahjong_utils.models.wind import Wind
 from mahjong_utils.shanten import ShantenResult
@@ -138,13 +139,24 @@ def map_hand(io: TextIO, hand: HandPattern, *, got: Optional[Tile] = None):
             io.write(' ')
 
 
+def map_shanten_without_got(io: TextIO, shanten: ShantenWithoutGot):
+    io.write("进张：")
+    io.write(tiles_text(sorted(shanten.advance)))
+    io.write(" (")
+    io.write(str(shanten.advance_num))
+    io.write("张")
+    if shanten.shanten == 1:
+        io.write("：好型")
+        io.write(str(shanten.well_shape_advance_num))
+        io.write("张，愚型")
+        io.write(str(shanten.advance_num - shanten.well_shape_advance_num))
+        io.write("张")
+    io.write(")")
+
+
 def map_shanten_result(io: TextIO, result: ShantenResult, *, got: Optional[Tile] = None):
     map_hand(io, result.hand.patterns[0], got=got)
     io.write('\n')
-
-    remaining = defaultdict(lambda: 4)
-    for t in result.hand.tiles:
-        remaining[t] -= 1
 
     if not result.with_got:
         if result.shanten == -1:
@@ -155,15 +167,8 @@ def map_shanten_result(io: TextIO, result: ShantenResult, *, got: Optional[Tile]
             io.write(str(result.shanten))
             io.write("向听：\n")
 
-        advance_count = 0
-        for t in result.advance:
-            advance_count += remaining[t]
-
-        io.write("进张：")
-        io.write(tiles_text(sorted(result.advance)))
-        io.write(" (")
-        io.write(str(advance_count))
-        io.write("张)\n")
+        map_shanten_without_got(io, cast(result.shanten_info, ShantenWithoutGot))
+        io.write("\n")
     else:
         grouped = defaultdict(dict)
 
@@ -183,24 +188,14 @@ def map_shanten_result(io: TextIO, result: ShantenResult, *, got: Optional[Tile]
                     io.write("（退向）")
                 io.write("：\n")
 
-            ordered = []
-            for discard, shanten_after_discard in grouped[shanten_num].items():
-                advance_count = 0
-                for t in shanten_after_discard.advance:
-                    advance_count += remaining[t]
-                ordered.append((discard, advance_count, shanten_after_discard))
+            ordered = sorted(grouped[shanten_num].items(), key=lambda x: x[1].advance_num, reverse=True)
 
-            ordered.sort(key=lambda x: x[1], reverse=True)
-
-            for discard, advance_count, shanten_after_discard in ordered:
+            for discard, shanten_after_discard in ordered:
                 io.write("打")
                 io.write(str(discard))
                 io.write("  ")
-                io.write("进张：")
-                io.write(tiles_text(sorted(shanten_after_discard.advance)))
-                io.write(" (")
-                io.write(str(advance_count))
-                io.write("张)\n")
+                map_shanten_without_got(io, shanten_after_discard)
+                io.write("\n")
 
             io.write("\n")
 
