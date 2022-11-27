@@ -284,7 +284,7 @@ dev = ["Sphinx (>=4.1.1)", "black (>=19.10b0)", "colorama (>=0.3.4)", "docutils 
 
 [[package]]
 name = "mahjong-utils"
-version = "0.2.0a1"
+version = "0.2.0a2"
 description = "立直麻将小工具"
 category = "main"
 optional = false
@@ -744,7 +744,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "5d9a08e7e065914cebbdaa7da24a67267a5225138148d83ba6c617f98e04758e"
+content-hash = "fc1a9875e7d83dc044e8acd9e4ff0d6d775a68b6d65d627965856255b308f7f7"
 
 [metadata.files]
 anyio = [
@@ -941,10 +941,10 @@ loguru = [
     {file = "loguru-0.6.0.tar.gz", hash = "sha256:066bd06758d0a513e9836fd9c6b5a75bfb3fd36841f4b996bc60b547a309d41c"},
 ]
 mahjong-utils = [
-    {file = "mahjong-utils-0.2.0a1.tar.gz", hash = "sha256:2bbfabf77c6bf4f9d26c8f1c336f394f23fb763c5dfdf918d8ebb743f2abc685"},
-    {file = "mahjong_utils-0.2.0a1-py3-none-macosx_10_15_x86_64.whl", hash = "sha256:89dd0b8fdd0a30680b293365f479437c7e0bf5da1eb033f48dfdd6cfdc2d4e5e"},
-    {file = "mahjong_utils-0.2.0a1-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:f7464b1d7f02df73ca0ed0353c10c96bfed87c3aba3a30226f7dfe82dbd1807c"},
-    {file = "mahjong_utils-0.2.0a1-py3-none-win_amd64.whl", hash = "sha256:9898e167f9d3f690b48df71b06b69fbcf41d543e9f05266951ee0cb197f4b98a"},
+    {file = "mahjong-utils-0.2.0a2.tar.gz", hash = "sha256:9b784c6b4cfa060b70b366e4d3286aad784ea50d7e8c13858299dd46ed87f97a"},
+    {file = "mahjong_utils-0.2.0a2-py3-none-macosx_10_15_x86_64.whl", hash = "sha256:93d8d54ff819c4ca6206e53805fb2bf3fda052d52695e86c85bdad5e4e80ae8a"},
+    {file = "mahjong_utils-0.2.0a2-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:c637facfd8a49ea9d5cb9399b1b9f5458ef4ec90a8ed09669f2793364b509b03"},
+    {file = "mahjong_utils-0.2.0a2-py3-none-win_amd64.whl", hash = "sha256:dc32fc4bf25a59e7ea383da007e757d5eda879c4224b95b9edda6336b2a50758"},
 ]
 markupsafe = [
     {file = "MarkupSafe-2.1.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:86b1f75c4e7c2ac2ccdaec2b9022845dbb81880ca318bb7a0a01fbf7813e3812"},
