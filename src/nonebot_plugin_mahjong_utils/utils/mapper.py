@@ -54,9 +54,9 @@ yaku_mapping = {
     sukantsu: "四杠子",
     churen: "九莲宝灯",
     daisushi: "大四喜",
-    churen9: "纯正九莲宝灯",
+    churen_nine_waiting: "纯正九莲宝灯",
     suanko_tanki: "四暗刻单骑",
-    kokushi13: "国士无双十三面"
+    kokushi_thirteen_waiting: "国士无双十三面"
 }
 
 num_mapping = {
@@ -147,9 +147,9 @@ def map_shanten_without_got(io: TextIO, shanten: ShantenWithoutGot):
     io.write("张")
     if shanten.shanten == 1:
         io.write("：好型")
-        io.write(str(shanten.well_shape_advance_num))
+        io.write(str(shanten.good_shape_advance_num))
         io.write("张，愚型")
-        io.write(str(shanten.advance_num - shanten.well_shape_advance_num))
+        io.write(str(shanten.advance_num - shanten.good_shape_advance_num))
         io.write("张")
     io.write(")")
 
