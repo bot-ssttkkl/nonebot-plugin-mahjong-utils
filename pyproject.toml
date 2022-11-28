@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot-plugin-mahjong-utils"
-version = "0.2.1.post1"
+version = "0.2.2"
 description = ""
 authors = ["ssttkkl <huang.wen.long@hotmail.com>"]
 readme = "README.MD"
@@ -13,8 +13,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.9"
 nonebot2 = "^2.0.0rc1"
-mahjong-utils = "^0.1.1a4"
-
+mahjong-utils = "^0.2.0"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^5.0.4"
