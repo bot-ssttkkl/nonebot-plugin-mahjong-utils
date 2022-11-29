@@ -284,7 +284,7 @@ dev = ["Sphinx (>=4.1.1)", "black (>=19.10b0)", "colorama (>=0.3.4)", "docutils 
 
 [[package]]
 name = "mahjong-utils"
-version = "0.2.0"
+version = "0.2.1"
 description = "立直麻将小工具"
 category = "main"
 optional = false
@@ -744,7 +744,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "0054f8b85e1f24da3f8de65c451e9abaf8eed3a8c996aa1e6ae08566e4d0d7f1"
+content-hash = "6f65f25159c265912d7c39cb807b880ef8b52292ab8dfe6cb07f7d04789bae77"
 
 [metadata.files]
 anyio = [
@@ -941,10 +941,10 @@ loguru = [
     {file = "loguru-0.6.0.tar.gz", hash = "sha256:066bd06758d0a513e9836fd9c6b5a75bfb3fd36841f4b996bc60b547a309d41c"},
 ]
 mahjong-utils = [
-    {file = "mahjong-utils-0.2.0.tar.gz", hash = "sha256:3e7adb81a1ee2ae31f954654507a700a53a7619756ad38ecadc82f3d974a5266"},
-    {file = "mahjong_utils-0.2.0-py3-none-macosx_10_15_x86_64.whl", hash = "sha256:467d93a8df8854ee7a65a2fec0e5735a92c4ce5b4db029c52f5dd1d880f0104d"},
-    {file = "mahjong_utils-0.2.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:3324a20038418de50b2c2116e691132fae62b4cce4a5ba87f3d3ffb5469ddabc"},
-    {file = "mahjong_utils-0.2.0-py3-none-win_amd64.whl", hash = "sha256:9c7b8dd17e69c81bb5c5c40be747c7d4422ba011d6f2ba031e64d525d3fa6e30"},
+    {file = "mahjong-utils-0.2.1.tar.gz", hash = "sha256:dd0efe9b87413b544505a2dbc57e4035d93fec56affaa42c3e50f9846afd7b76"},
+    {file = "mahjong_utils-0.2.1-py3-none-macosx_10_15_x86_64.whl", hash = "sha256:3841c0dbe2bbc3cc40d01440a35ff4a075939143d780af828c6317f085e655ab"},
+    {file = "mahjong_utils-0.2.1-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:8e597dc96b901c77f3e65a50181759717bc56b9a70eecd8bede9da1c9dfe5e11"},
+    {file = "mahjong_utils-0.2.1-py3-none-win_amd64.whl", hash = "sha256:abc0c9dcdc4f628cb0508f936ffa8b21633c0e2222300cc2ff2fccf2e3a4cdf9"},
 ]
 markupsafe = [
     {file = "MarkupSafe-2.1.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:86b1f75c4e7c2ac2ccdaec2b9022845dbb81880ca318bb7a0a01fbf7813e3812"},
