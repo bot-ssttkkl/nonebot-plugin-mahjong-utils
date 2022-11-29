@@ -3,10 +3,9 @@ from typing import TextIO, Optional, Tuple, cast
 
 from mahjong_utils.hora import Hora
 from mahjong_utils.models.hand_pattern import HandPattern, RegularHandPattern
-from mahjong_utils.models.shanten import ShantenWithoutGot
 from mahjong_utils.models.tile import tiles_text, Tile
 from mahjong_utils.models.wind import Wind
-from mahjong_utils.shanten import ShantenResult, ShantenWithFuroChance
+from mahjong_utils.shanten import ShantenResult, ShantenWithFuroChance, ShantenWithoutGot
 from mahjong_utils.yaku.common import *
 from mahjong_utils.yaku.extra import *
 from mahjong_utils.yaku.yakuman import *
