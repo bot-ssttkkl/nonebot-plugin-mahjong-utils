@@ -19,7 +19,7 @@ from nonebot_plugin_mahjong_utils.utils.parser import try_parse_wind, try_parse_
 tiles_pattern = r"([0-9]+(m|p|s|z){1})+"
 furo_pattern = r"[0-9]+(m|p|s|z){1}"
 
-tiles_sniffer = on_regex(rf"^{tiles_pattern}(\s{furo_pattern})*")
+tiles_sniffer = on_regex(rf"^{tiles_pattern}(\s{furo_pattern})*(\s.*)*$")
 
 
 def to_msg(tiles, got, furo, dora, self_wind, round_wind, extra_yaku):

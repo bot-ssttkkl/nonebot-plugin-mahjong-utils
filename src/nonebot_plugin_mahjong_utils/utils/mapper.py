@@ -6,7 +6,7 @@ from mahjong_utils.models.hand_pattern import HandPattern, RegularHandPattern
 from mahjong_utils.models.shanten import ShantenWithoutGot
 from mahjong_utils.models.tile import tiles_text, Tile
 from mahjong_utils.models.wind import Wind
-from mahjong_utils.shanten import ShantenResult
+from mahjong_utils.shanten import ShantenResult, ShantenWithFuroChance
 from mahjong_utils.yaku.common import *
 from mahjong_utils.yaku.extra import *
 from mahjong_utils.yaku.yakuman import *
@@ -173,7 +173,13 @@ def map_shanten_result(io: TextIO, result: ShantenResult, *, got: Optional[Tile]
         grouped = defaultdict(dict)
 
         for discard, shanten_after_discard in result.discard_to_advance.items():
-            grouped[shanten_after_discard.shanten][discard] = shanten_after_discard
+            grouped[shanten_after_discard.shanten][("discard", discard)] = shanten_after_discard
+
+        for ankan, ankan_after_discard in result.ankan_to_advance.items():
+            grouped[ankan_after_discard.shanten][("ankan", ankan)] = ankan_after_discard
+
+        records = 0
+        tot_records = sum(map(lambda x: len(x), grouped.values()))
 
         for shanten_num in sorted(grouped.keys()):
             if result.shanten == -1:
@@ -190,14 +196,105 @@ def map_shanten_result(io: TextIO, result: ShantenResult, *, got: Optional[Tile]
 
             ordered = sorted(grouped[shanten_num].items(), key=lambda x: x[1].advance_num, reverse=True)
 
-            for discard, shanten_after_discard in ordered:
-                io.write("打")
-                io.write(str(discard))
-                io.write("  ")
+            for action, shanten_after_discard in ordered:
+                io.write("[")
+                if action[0] == 'discard':
+                    io.write(f"打{action[1]}")
+                elif action[0] == 'ankan':
+                    io.write(f"暗杠{action[1]}")
+                io.write("]  ")
+
                 map_shanten_without_got(io, shanten_after_discard)
                 io.write("\n")
 
+                records += 1
+
+                if records >= 10:
+                    break
+
             io.write("\n")
+
+            if records >= 10:
+                break
+
+        if records < tot_records:
+            io.write("（只显示最优的前10种打法）")
+
+
+def map_furo_chance_shanten_result(io: TextIO, result: ShantenResult, chance_tile: Tile, tile_from: int):
+    map_hand(io, result.hand.patterns[0])
+    if tile_from == 1:
+        io.write("下家打")
+    elif tile_from == 2:
+        io.write("对家打")
+    elif tile_from == 3:
+        io.write("上家打")
+    io.write(str(chance_tile))
+    io.write('\n')
+
+    grouped = defaultdict(dict)
+
+    shanten_info = cast(ShantenWithFuroChance, result.shanten_info)
+
+    if shanten_info.pass_ is not None:
+        grouped[shanten_info.pass_.shanten][("pass",)] = shanten_info.pass_
+
+    if shanten_info.pon is not None:
+        for discard, shanten_after_pon_discard in shanten_info.pon.discard_to_advance.items():
+            grouped[shanten_after_pon_discard.shanten][("pon", discard)] = shanten_after_pon_discard
+
+    if shanten_info.minkan is not None:
+        grouped[shanten_info.minkan.shanten][("minkan",)] = shanten_info.minkan
+
+    for tatsu, shanten_after_chi in shanten_info.chi.items():
+        for discard, shanten_after_chi_discard in shanten_after_chi.discard_to_advance.items():
+            grouped[shanten_after_chi_discard.shanten][("chi", tatsu, discard)] = shanten_after_chi_discard
+
+    records = 0
+    tot_records = sum(map(lambda x: len(x), grouped.values()))
+
+    for shanten_num in sorted(grouped.keys()):
+        if result.shanten == -1:
+            io.write("和牌\n")
+            break
+        elif shanten_num == 0:
+            io.write("听牌：\n")
+        else:
+            io.write(str(shanten_num))
+            io.write("向听")
+            if shanten_num != result.shanten:
+                io.write("（退向）")
+            io.write("：\n")
+
+        ordered = sorted(grouped[shanten_num].items(), key=lambda x: x[1].advance_num, reverse=True)
+
+        for action, shanten_after_action in ordered:
+            io.write("[")
+            if action[0] == 'pass':
+                io.write("PASS")
+            elif action[0] == 'chi':
+                io.write(f"{action[1]}吃打{action[2]}")
+            elif action[0] == 'pon':
+                io.write(f"碰打{action[1]}")
+            elif action[0] == 'minkan':
+                io.write(f"杠")
+            io.write("]  ")
+
+            map_shanten_without_got(io, shanten_after_action)
+            io.write("\n")
+
+            records += 1
+
+            if records >= 10:
+                break
+
+        io.write("\n")
+
+        if records >= 10:
+            break
+
+    if records < tot_records:
+        io.write("（只显示最优的前10种打法）")
 
 
 def map_han_hu_text(io: TextIO, han: int, hu: int):
