@@ -3,7 +3,7 @@ from io import StringIO
 
 from mahjong_utils.hora import build_hora_from_shanten_result
 from mahjong_utils.models.furo import Furo
-from mahjong_utils.models.tile import parse_tiles
+from mahjong_utils.models.tile import parse_tiles, Tile
 from mahjong_utils.shanten import shanten
 from nonebot import on_regex, Bot
 from nonebot.internal.adapter import Event
@@ -23,6 +23,9 @@ tiles_sniffer = on_regex(rf"^{tiles_pattern}(\s{furo_pattern})*(\s.*)*$")
 
 
 def to_msg(tiles, got, furo, dora, self_wind, round_wind, extra_yaku):
+    tiles = [Tile.by_type_and_num(x.tile_type, x.real_num) for x in tiles]
+    got = Tile.by_type_and_num(got.tile_type, got.real_num)
+
     result = shanten(tiles, furo)
     with StringIO() as sio:
         if result.shanten == -1 and len(result.hand.furo) * 3 + len(tiles) == 14:
