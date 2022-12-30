@@ -24,7 +24,8 @@ tiles_sniffer = on_regex(rf"^{tiles_pattern}(\s{furo_pattern})*(\s.*)*$")
 
 def to_msg(tiles, got, furo, dora, self_wind, round_wind, extra_yaku):
     tiles = [Tile.by_type_and_num(x.tile_type, x.real_num) for x in tiles]
-    got = Tile.by_type_and_num(got.tile_type, got.real_num)
+    if got is not None:
+        got = Tile.by_type_and_num(got.tile_type, got.real_num)
 
     result = shanten(tiles, furo)
     with StringIO() as sio:
