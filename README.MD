@@ -29,6 +29,8 @@ nonebot-plugin-mahjong-utils
 
 格式：`手牌代码<上家打出的牌`、`手牌代码^对家打出的牌`或`手牌代码>下家打出的牌`，其中输入的手牌为3k+1张。
 
+~~实际上对家打出和下家打出是一样的（不能吃），这里区分是为了命令的工整性~~
+
 对每种打法（包括吃、碰、大明杠与PASS）计算向听数与进张。一向听的手牌还会计算好型与愚型进张数。
 
 ![furo_shanten_1](img/furo_shanten_1.png)
@@ -58,7 +60,7 @@ nonebot-plugin-mahjong-utils
 ## Special Thanks
 
 -  [nonebot/nonebot2](https://github.com/nonebot/nonebot2)
--  [ssttkkl/mahjong-utils-py](https://github.com/ssttkkl/mahjong-utils-py) ~~我谢我自己~~
+-  [ssttkkl/mahjong-utils](https://github.com/ssttkkl/mahjong-utils) ~~我谢我自己~~
 
 ## 在线乞讨
 
