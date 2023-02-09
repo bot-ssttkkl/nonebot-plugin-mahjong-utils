@@ -38,7 +38,7 @@ yaku_mapping = {
     ippatsu: "一发",
     rinshan: "岭上开花",
     chankan: "枪杠",
-    haitei: "海底捞月",
+    haitei: "海底摸月",
     houtei: "河底捞鱼",
     w_richi: "两立直",
     tenhou: "天和",
