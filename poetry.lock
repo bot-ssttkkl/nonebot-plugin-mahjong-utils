@@ -27,6 +27,29 @@ python-versions = ">=3.6"
 python-dateutil = ">=2.7.0"
 
 [[package]]
+name = "asgiref"
+version = "3.6.0"
+description = "ASGI specs, helper code, and adapters"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+tests = ["mypy (>=0.800)", "pytest", "pytest-asyncio"]
+
+[[package]]
+name = "async-asgi-testclient"
+version = "1.4.11"
+description = "Async client for testing ASGI web applications"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+multidict = ">=4.0,<7.0"
+requests = ">=2.21,<3.0"
+
+[[package]]
 name = "attrs"
 version = "22.2.0"
 description = "Classes Without Boilerplate"
@@ -264,8 +287,8 @@ dev = ["Sphinx (>=4.1.1)", "black (>=19.10b0)", "colorama (>=0.3.4)", "docutils 
 
 [[package]]
 name = "mahjong-utils"
-version = "0.3.2"
-description = "立直麻将小工具"
+version = "0.4.0"
+description = "日麻小工具"
 category = "main"
 optional = false
 python-versions = "*"
@@ -357,6 +380,21 @@ fastapi = ["fastapi (>=0.87.0,!=0.89.0,<1.0.0)", "uvicorn[standard] (>=0.20.0,<1
 httpx = ["httpx[http2] (>=0.20.0,<1.0.0)"]
 quart = ["Quart (>=0.18.0,<1.0.0)", "uvicorn[standard] (>=0.20.0,<1.0.0)"]
 websockets = ["websockets (>=10.0,<11.0)"]
+
+[[package]]
+name = "nonebug"
+version = "0.2.3"
+description = "nonebot2 test framework"
+category = "dev"
+optional = false
+python-versions = ">=3.8,<4.0"
+
+[package.dependencies]
+asgiref = ">=3.4.0,<4.0.0"
+async-asgi-testclient = ">=1.4.8,<2.0.0"
+nonebot2 = ">=2.0.0-beta.1,<3.0.0"
+pytest = ">=7.0.0,<8.0.0"
+typing-extensions = ">=4.0.0,<5.0.0"
 
 [[package]]
 name = "packaging"
@@ -681,7 +719,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "fcdabee0d3bd17a2a8de786e43155e4ac14a37bf2f2a2c1ffef15f0e7e6161dd"
+content-hash = "47f904e2dd02cb40e9677db7d54bc932e47cb5d3ef3c68725aa13e314500de80"
 
 [metadata.files]
 anyio = [
@@ -691,6 +729,13 @@ anyio = [
 arrow = [
     {file = "arrow-1.2.3-py3-none-any.whl", hash = "sha256:5a49ab92e3b7b71d96cd6bfcc4df14efefc9dfa96ea19045815914a6ab6b1fe2"},
     {file = "arrow-1.2.3.tar.gz", hash = "sha256:3934b30ca1b9f292376d9db15b19446088d12ec58629bc3f0da28fd55fb633a1"},
+]
+asgiref = [
+    {file = "asgiref-3.6.0-py3-none-any.whl", hash = "sha256:71e68008da809b957b7ee4b43dbccff33d1b23519fb8344e33f049897077afac"},
+    {file = "asgiref-3.6.0.tar.gz", hash = "sha256:9567dfe7bd8d3c8c892227827c41cce860b368104c3431da67a0c5a65a949506"},
+]
+async-asgi-testclient = [
+    {file = "async-asgi-testclient-1.4.11.tar.gz", hash = "sha256:4449ac85d512d661998ec61f91c9ae01851639611d748d81ae7f816736551792"},
 ]
 attrs = [
     {file = "attrs-22.2.0-py3-none-any.whl", hash = "sha256:29e95c7f6778868dbd49170f98f8818f78f3dc5e0e37c0b1f474e3561b240836"},
@@ -921,10 +966,10 @@ loguru = [
     {file = "loguru-0.6.0.tar.gz", hash = "sha256:066bd06758d0a513e9836fd9c6b5a75bfb3fd36841f4b996bc60b547a309d41c"},
 ]
 mahjong-utils = [
-    {file = "mahjong-utils-0.3.2.tar.gz", hash = "sha256:8a2b4637e9323f80eb5ab2168d1442e23f1ed7c132e19daa523ca333ced0976d"},
-    {file = "mahjong_utils-0.3.2-py3-none-macosx_11_7_x86_64.whl", hash = "sha256:9b5af05d073c6bff8711a2c0a50753c4cdfec6b63788363314aa764ecd515530"},
-    {file = "mahjong_utils-0.3.2-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:9cac52900812288037d1ec8baedb4aefe0c834d9a4a9ab2a4de818b5b740a4d7"},
-    {file = "mahjong_utils-0.3.2-py3-none-win_amd64.whl", hash = "sha256:3624187d51f3a9ccd083686087e69967d4ae38c4dd09403f04bcd59b2266a599"},
+    {file = "mahjong-utils-0.4.0.tar.gz", hash = "sha256:e2a3710a0dee801deb2c5c38457fa9bf6cfd27010783d4552472cc0a4cf7f0f2"},
+    {file = "mahjong_utils-0.4.0-py3-none-macosx_11_7_x86_64.whl", hash = "sha256:0b22ed8949acb5cacb7d67a51a51359ee90a0b012ef358abdf3035940c9c22ec"},
+    {file = "mahjong_utils-0.4.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:022b9a8ba9d98499520343822b8877b99a18416d9fd1cbb82d9edea271a50d76"},
+    {file = "mahjong_utils-0.4.0-py3-none-win_amd64.whl", hash = "sha256:8a0427369dec52942fcec8379753582e3fd77c595276aab5d4f76c17711c9381"},
 ]
 markupsafe = [
     {file = "MarkupSafe-2.1.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:665a36ae6f8f20a4676b53224e33d456a6f5a72657d9c83c2aa00765072f31f7"},
@@ -1069,6 +1114,10 @@ nonebot-adapter-console = [
 nonebot2 = [
     {file = "nonebot2-2.0.0rc3-py3-none-any.whl", hash = "sha256:6596e9837e95e99a6cfa7c4e21d75a54a5f3529d34f30454136ebfef6aa374f4"},
     {file = "nonebot2-2.0.0rc3.tar.gz", hash = "sha256:a16da07b7c764d536cbdf9bcb86eb7cc21b1d254c966552ec5d20e0cb303cec2"},
+]
+nonebug = [
+    {file = "nonebug-0.2.3-py3-none-any.whl", hash = "sha256:5c83bd885899b2857323fa19eff6bbc3f160729453b2f289d8305a99b7b95fc9"},
+    {file = "nonebug-0.2.3.tar.gz", hash = "sha256:3e59757b32b6b96cd8c36c4c9fd6050e611b1ffad058ec5fa82cba3f86495c61"},
 ]
 packaging = [
     {file = "packaging-23.0-py3-none-any.whl", hash = "sha256:714ac14496c3e68c99c29b00845f7a2b85f3bb6f1078fd9f72fd20f0570002b2"},

@@ -8,7 +8,7 @@ from nonebot.typing import T_State
 
 from nonebot_plugin_mahjong_utils.errors import BadRequestError
 from nonebot_plugin_mahjong_utils.interceptors.handle_error import handle_error
-from nonebot_plugin_mahjong_utils.utils.mapper import map_han_hu
+from nonebot_plugin_mahjong_utils.mapper.point_by_han_hu import map_point_by_han_hu
 
 han_hu_matcher = on_regex(r"^([1-9][0-9]*)番([1-9][0-9]*)符$")
 
@@ -27,7 +27,7 @@ async def handle(bot: Bot, event: Event, state: T_State, matcher: Matcher):
         raise BadRequestError("请输入正确的番符数目")
 
     with StringIO() as sio:
-        map_han_hu(sio, parent_point, child_point)
+        map_point_by_han_hu(sio, parent_point, child_point)
 
         msg = sio.getvalue()
         await matcher.send(msg)

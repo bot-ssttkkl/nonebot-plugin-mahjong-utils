@@ -2,7 +2,7 @@ from io import StringIO
 from typing import List, Mapping, Any, Optional
 
 from mahjong_utils.hora import build_hora_from_shanten_result
-from mahjong_utils.models.furo import Furo, parse_furo
+from mahjong_utils.models.furo import Furo
 from mahjong_utils.models.tile import parse_tiles, Tile
 from mahjong_utils.shanten import shanten
 
@@ -16,7 +16,7 @@ class BaseTestMapper(MyTest):
     excepted: str
 
     def test_map_hora(self):
-        from nonebot_plugin_mahjong_utils.utils.mapper import map_hora
+        from nonebot_plugin_mahjong_utils.mapper.hora import map_hora
 
         tiles = self.tiles
         shanten_result = shanten(tiles, self.furo)
@@ -31,22 +31,26 @@ class BaseTestMapper(MyTest):
 
 
 class TestMapper1(BaseTestMapper):
-    tiles = parse_tiles("111s456p777z1122p")
+    tiles = parse_tiles("111s456p777z11222p")
     excepted = """1122456p111s777z2p 
 三暗刻  2番  （自摸限定）
 门清自摸  1番  （自摸限定）
 中  1番
 
-自摸：4番50符  满贯
+自摸：4番50符
 荣和：1番50符
 
-亲家和牌时：自摸12000 (4000 ALL)，荣和2400
-子家和牌时：自摸8000 (4000 2000)，荣和1600
-"""
+亲家和牌时：
+荣和：2400点
+自摸：子家4000点（满贯，共12000点）
+
+子家和牌时：
+荣和：1600点
+自摸：子家2000点，亲家4000点（满贯，共8000点）"""
 
 
 class TestMapper2(BaseTestMapper):
-    tiles = parse_tiles("111s444p777z1122p")
+    tiles = parse_tiles("111s444p777z11222p")
     excepted = """1122444p111s777z2p 
 四暗刻  役满  （自摸限定）
 对对和  2番  （荣和限定）
@@ -54,15 +58,19 @@ class TestMapper2(BaseTestMapper):
 中  1番  （荣和限定）
 
 自摸：一倍役满
-荣和：5番60符  满贯
+荣和：5番60符
 
-亲家和牌时：自摸48000 (16000 ALL)，荣和12000
-子家和牌时：自摸32000 (16000 8000)，荣和8000
-"""
+亲家和牌时：
+荣和：12000点（满贯）
+自摸：子家16000点（役满，共48000点）
+
+子家和牌时：
+荣和：8000点（满贯）
+自摸：子家8000点，亲家16000点（役满，共32000点）"""
 
 
 class TestMapper3(BaseTestMapper):
-    tiles = parse_tiles("111s444p777z1122p")
+    tiles = parse_tiles("111s444p777z11222p")
     kwargs = {"dora": 8}
     excepted = """1122444p111s777z2p dora8 
 四暗刻  役满  （自摸限定）
@@ -72,35 +80,47 @@ class TestMapper3(BaseTestMapper):
 宝牌  8番  （荣和限定）
 
 自摸：一倍役满
-荣和：13番60符  累计役满
+荣和：13番60符
 
-亲家和牌时：自摸48000 (16000 ALL)，荣和48000
-子家和牌时：自摸32000 (16000 8000)，荣和32000
-"""
+亲家和牌时：
+荣和：48000点（役满）
+自摸：子家16000点（役满，共48000点）
+
+子家和牌时：
+荣和：32000点（役满）
+自摸：子家8000点，亲家16000点（役满，共32000点）"""
 
 
 class TestMapper4(BaseTestMapper):
     tiles = parse_tiles("444p567s22333p")
-    furo = [parse_furo("234s")]
+    furo = [Furo.parse("234s")]
     excepted = """2233444p567s3p 234s 
 断幺  1番
 
 1番30符
 
-亲家和牌时：自摸1500 (500 ALL)，荣和1500
-子家和牌时：自摸1100 (500 300)，荣和1000
-"""
+亲家和牌时：
+荣和：1500点
+自摸：子家500点（共1500点）
+
+子家和牌时：
+荣和：1000点
+自摸：子家300点，亲家500点（共1100点）"""
 
 
 class TestMapper5(BaseTestMapper):
     tiles = parse_tiles("567s22333m")
-    furo = [parse_furo("0220s"), parse_furo("234p")]
+    furo = [Furo.parse("0220s"), Furo.parse("234p")]
     excepted = """2233m567s3m 0220s 234p 
 断幺  1番
 
 自摸：1番50符
 荣和：1番40符
 
-亲家和牌时：自摸2400 (800 ALL)，荣和2000
-子家和牌时：自摸1600 (800 400)，荣和1300
-"""
+亲家和牌时：
+荣和：2000点
+自摸：子家800点（共2400点）
+
+子家和牌时：
+荣和：1300点
+自摸：子家400点，亲家800点（共1600点）"""

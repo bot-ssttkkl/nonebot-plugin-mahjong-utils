@@ -10,8 +10,8 @@ from nonebot.typing import T_State
 
 from nonebot_plugin_mahjong_utils.errors import BadRequestError
 from nonebot_plugin_mahjong_utils.interceptors.handle_error import handle_error
+from nonebot_plugin_mahjong_utils.mapper.shanten import map_furo_chance_shanten_result
 from nonebot_plugin_mahjong_utils.utils.executor import run_in_my_executor
-from nonebot_plugin_mahjong_utils.utils.mapper import map_furo_chance_shanten_result
 
 tiles_pattern = r"([0-9]+(m|p|s|z){1})+"
 chance_tile_pattern = r"([0-9](m|p|s|z){1})"

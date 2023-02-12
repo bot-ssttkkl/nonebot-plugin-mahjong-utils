@@ -12,8 +12,9 @@ from nonebot.typing import T_State
 
 from nonebot_plugin_mahjong_utils.errors import BadRequestError
 from nonebot_plugin_mahjong_utils.interceptors.handle_error import handle_error
+from nonebot_plugin_mahjong_utils.mapper.hora import map_hora
+from nonebot_plugin_mahjong_utils.mapper.shanten import map_common_shanten_result
 from nonebot_plugin_mahjong_utils.utils.executor import run_in_my_executor
-from nonebot_plugin_mahjong_utils.utils.mapper import map_shanten_result, map_hora
 from nonebot_plugin_mahjong_utils.utils.parser import try_parse_wind, try_parse_extra_yaku
 
 tiles_pattern = r"([0-9]+(m|p|s|z){1})+"
@@ -43,7 +44,7 @@ def to_msg(tiles, got, furo, dora, self_wind, round_wind, extra_yaku):
             )
             map_hora(sio, hora_ron, hora_tsumo, got=got)
         else:
-            map_shanten_result(sio, result, got=got)
+            map_common_shanten_result(sio, result, got=got)
 
         msg = sio.getvalue().strip()
         return msg
@@ -56,7 +57,6 @@ async def handle(bot: Bot, event: Event, state: T_State, matcher: Matcher):
 
     tiles = parse_tiles(text[0])
     furo = []
-    tsumo = False
     dora = 0
     self_wind = None
     round_wind = None
