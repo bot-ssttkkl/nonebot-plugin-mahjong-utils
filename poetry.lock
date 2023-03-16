@@ -371,7 +371,7 @@ python-markdown-math = ">=0.8"
 
 [[package]]
 name = "nonebot-plugin-send-anything-anywhere"
-version = "0.2.0"
+version = "0.2.1"
 description = "An adaptor for nonebot2 adaptors"
 category = "main"
 optional = true
@@ -751,7 +751,7 @@ htmlrender = ["nonebot-plugin-htmlrender", "nonebot-plugin-send-anything-anywher
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "7270ea8aaddf55b2e1b8795ca43a1a37dab36045ebbe73697f391c6e1ea56041"
+content-hash = "f854239dfb5b0ff3a003a9c3ef4c6b19ce98101d3660899cf5c75de2c2852b01"
 
 [metadata.files]
 aiofiles = [
@@ -1255,8 +1255,8 @@ nonebot-plugin-htmlrender = [
     {file = "nonebot_plugin_htmlrender-0.2.0.3.tar.gz", hash = "sha256:d7e0432ebb78abbc7d934141902722d36334ef12921f640da4c90dedb62452fb"},
 ]
 nonebot-plugin-send-anything-anywhere = [
-    {file = "nonebot_plugin_send_anything_anywhere-0.2.0-py3-none-any.whl", hash = "sha256:f46a5bd0c54370696c3ea9aa3a7154fe83ce9accfab9c089a2fbf3a0ea733bfb"},
-    {file = "nonebot_plugin_send_anything_anywhere-0.2.0.tar.gz", hash = "sha256:852681d08edb9dfe0beab6a7243c168d919d7c67314474725e41353d1ca205cc"},
+    {file = "nonebot_plugin_send_anything_anywhere-0.2.1-py3-none-any.whl", hash = "sha256:2e9a0376fb8fad20f21f32c74325583721a0229fc6a04a43bd63182af8cb16dc"},
+    {file = "nonebot_plugin_send_anything_anywhere-0.2.1.tar.gz", hash = "sha256:9de23254ea520eac4360026f4e7ffdb205a240d5fc08ee4daceda30111db3485"},
 ]
 nonebot2 = [
     {file = "nonebot2-2.0.0rc3-py3-none-any.whl", hash = "sha256:6596e9837e95e99a6cfa7c4e21d75a54a5f3529d34f30454136ebfef6aa374f4"},

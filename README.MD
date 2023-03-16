@@ -47,15 +47,17 @@ nonebot-plugin-mahjong-utils
 
 ![hora_1](img/hora_1.png)
 
-![hora_2](img/hora_2.png)
-
-![hora_3](img/hora_3.png)
-
-![hora_4](img/hora_4.png)
-
 ### 番符点数查询
 
 - 输入x番y符，输出亲家/子家的自摸/荣和得点
+
+## 配置项
+
+### mahjong_utils_send_image
+
+将结果以图片形式发送（若将此项设置为True，请安装nonebot-plugin-mahjong-utils[htmlrender]以安装必需依赖）
+
+默认值：`False`
 
 ## Special Thanks
 
