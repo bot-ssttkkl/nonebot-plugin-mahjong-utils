@@ -9,7 +9,7 @@
 {% import "macro.html" as macro %}
 <div class="panel">
     <div class="panel__body">
-        {{ macro.tiles_view(tiles) }}
+        {{ macro.tiles_view(tiles, sorted=False) }}
         <br>
         {% if tile_from == 1 %}
         下家打

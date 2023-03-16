@@ -9,7 +9,7 @@
 {% import "macro.html" as macro %}
 <div class="panel">
     <div class="panel__body">
-        {{ macro.tiles_view(tiles[:-1]) }}
+        {{ macro.tiles_view(tiles[:-1], sorted=False) }}
         {{ macro.tiles_view([tiles[-1]], style='transform: rotate(90deg)') }}
         {% if regular %}
         {% for fr in furo %}
@@ -41,10 +41,12 @@
                     <div class="table__td" style="flex: 3">
                         面子
                     </div>
-                    <div class="table__td" style="flex: 9">
-                        {% for mt in pattern.menzen_mentsu %}
-                        {{ macro.tiles_view(mt.tiles, size="small", style="margin-inline-end: 16px") }}
-                        {% endfor %}
+                    <div class="table__td" style="flex: 9;">
+                        <div style="display: inline;">
+                            {% for mt in pattern.menzen_mentsu %}
+                            {{ macro.tiles_view(mt.tiles, size="small", style="margin-inline-end: 16px") }}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
                 {% endif %}
@@ -53,10 +55,12 @@
                     <div class="table__td" style="flex: 3">
                         副露
                     </div>
-                    <div class="table__td" style="flex: 9">
-                        {% for fr in furo %}
-                        {{ macro.tiles_view(fr.tiles, size="small", style="margin-inline-end: 16px") }}
-                        {% endfor %}
+                    <div class="table__td" style="flex: 9;">
+                        <div style="display: inline;">
+                            {% for fr in furo %}
+                            {{ macro.tiles_view(fr.tiles, size="small", style="margin-inline-end: 16px") }}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
                 {% endif %}
@@ -119,7 +123,8 @@
                         子家和牌
                     </div>
                     <div class="table__td" style="flex: 9">
-                        {{ get_tsumo_text(hora_tsumo.child_point.tsumo_parent, hora_tsumo.child_point.tsumo_child, False) }}
+                        {{ get_tsumo_text(hora_tsumo.child_point.tsumo_parent, hora_tsumo.child_point.tsumo_child,
+                        False) }}
                     </div>
                 </div>
             </div>

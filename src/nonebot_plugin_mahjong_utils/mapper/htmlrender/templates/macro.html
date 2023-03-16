@@ -1,8 +1,14 @@
-{% macro tiles_view(tiles, size='normal', style='') -%}
+{% macro tiles_view(tiles, size='normal', style='', sorted=True) -%}
 <div class="tiles" style="{{ style }}">
+    {% if sorted %}
+    {% for t in tiles|sort %}
+    <img class="tile-{{ size }}" src="tiles/{{ t }}.png" alt="{{ t }}"/>
+    {% endfor %}
+    {% else %}
     {% for t in tiles %}
     <img class="tile-{{ size }}" src="tiles/{{ t }}.png" alt="{{ t }}"/>
     {% endfor %}
+    {% endif %}
 </div>
 {%- endmacro %}
 {% macro percentile_str(x, ndigits=2) -%}
