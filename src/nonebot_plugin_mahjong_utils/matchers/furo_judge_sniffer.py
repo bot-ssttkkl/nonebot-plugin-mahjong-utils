@@ -11,6 +11,7 @@ from nonebot.typing import T_State
 from nonebot_plugin_mahjong_utils.errors import BadRequestError
 from nonebot_plugin_mahjong_utils.interceptors.handle_error import handle_error
 from nonebot_plugin_mahjong_utils.mapper.shanten import map_furo_chance_shanten_result
+from nonebot_plugin_mahjong_utils.render import render_furo_chance
 from nonebot_plugin_mahjong_utils.utils.executor import run_in_my_executor
 
 tiles_pattern = r"([0-9]+(m|p|s|z){1})+"
@@ -30,7 +31,7 @@ def to_msg(tiles: Sequence[Tile], chance_tile: Tile, tile_from: int):
 
 @furo_judge_sniffer.handle()
 @handle_error(furo_judge_sniffer, True)
-async def handle(bot: Bot, event: Event, state: T_State, matcher: Matcher):
+async def handle(event: Event, matcher: Matcher):
     text = event.get_plaintext()
     if '>' in text:
         tiles, chance_tile = event.get_plaintext().split('>')
@@ -50,5 +51,6 @@ async def handle(bot: Bot, event: Event, state: T_State, matcher: Matcher):
     if len(tiles) % 3 == 0:
         raise BadRequestError(f"invalid length of hand: {len(tiles)}")
 
-    msg = await run_in_my_executor(to_msg, tiles, chance_tile, tile_from)
+    result = await run_in_my_executor(furo_chance_shanten, tiles, chance_tile, tile_from == 3)
+    msg = await render_furo_chance(result, tiles, chance_tile, tile_from)
     await matcher.send(msg)

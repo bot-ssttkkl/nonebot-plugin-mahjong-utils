@@ -1,19 +1,16 @@
 import re
-from io import StringIO
 
 from mahjong_utils.hora import build_hora_from_shanten_result
 from mahjong_utils.models.furo import Furo
 from mahjong_utils.models.tile import parse_tiles, Tile
 from mahjong_utils.shanten import shanten
-from nonebot import on_regex, Bot
+from nonebot import on_regex
 from nonebot.internal.adapter import Event
 from nonebot.internal.matcher import Matcher
-from nonebot.typing import T_State
 
 from nonebot_plugin_mahjong_utils.errors import BadRequestError
 from nonebot_plugin_mahjong_utils.interceptors.handle_error import handle_error
-from nonebot_plugin_mahjong_utils.mapper.hora import map_hora
-from nonebot_plugin_mahjong_utils.mapper.shanten import map_common_shanten_result
+from nonebot_plugin_mahjong_utils.render import render_shanten, render_hora
 from nonebot_plugin_mahjong_utils.utils.executor import run_in_my_executor
 from nonebot_plugin_mahjong_utils.utils.parser import try_parse_wind, try_parse_extra_yaku
 
@@ -23,36 +20,9 @@ furo_pattern = r"[0-9]+(m|p|s|z){1}"
 tiles_sniffer = on_regex(rf"^{tiles_pattern}(\s{furo_pattern})*(\s.*)*$")
 
 
-def to_msg(tiles, got, furo, dora, self_wind, round_wind, extra_yaku):
-    tiles = [Tile.by_type_and_num(x.tile_type, x.real_num) for x in tiles]
-    if got is not None:
-        got = Tile.by_type_and_num(got.tile_type, got.real_num)
-
-    result = shanten(tiles, furo)
-    with StringIO() as sio:
-        if result.shanten == -1 and len(result.hand.furo) * 3 + len(tiles) == 14:
-            # 分析和牌
-            hora_ron = build_hora_from_shanten_result(
-                result, tiles[-1], False,
-                dora=dora, self_wind=self_wind, round_wind=round_wind,
-                extra_yaku=extra_yaku
-            )
-            hora_tsumo = build_hora_from_shanten_result(
-                result, tiles[-1], True,
-                dora=dora, self_wind=self_wind, round_wind=round_wind,
-                extra_yaku=extra_yaku
-            )
-            map_hora(sio, hora_ron, hora_tsumo, got=got)
-        else:
-            map_common_shanten_result(sio, result, got=got)
-
-        msg = sio.getvalue().strip()
-        return msg
-
-
 @tiles_sniffer.handle()
 @handle_error(tiles_sniffer, True)
-async def handle(bot: Bot, event: Event, state: T_State, matcher: Matcher):
+async def handle(event: Event, matcher: Matcher):
     text = event.get_plaintext().split(' ')
 
     tiles = parse_tiles(text[0])
@@ -93,5 +63,27 @@ async def handle(bot: Bot, event: Event, state: T_State, matcher: Matcher):
         # 少于三张牌不进行计算
         return
 
-    msg = await run_in_my_executor(to_msg, tiles, got, furo, dora, self_wind, round_wind, extra_yaku)
-    await matcher.send(msg)
+    tiles = [Tile.by_type_and_num(x.tile_type, x.real_num) for x in tiles]
+    if got is not None:
+        got = Tile.by_type_and_num(got.tile_type, got.real_num)
+
+    result = await run_in_my_executor(shanten, tiles, furo)
+    if result.shanten == -1 and len(result.hand.furo) * 3 + len(tiles) == 14:
+        # 分析和牌
+        hora_ron = await run_in_my_executor(
+            build_hora_from_shanten_result,
+            result, got, False,
+            dora=dora, self_wind=self_wind, round_wind=round_wind,
+            extra_yaku=extra_yaku
+        )
+        hora_tsumo = await run_in_my_executor(
+            build_hora_from_shanten_result,
+            result, got, True,
+            dora=dora, self_wind=self_wind, round_wind=round_wind,
+            extra_yaku=extra_yaku
+        )
+        msg = await render_hora(hora_ron, hora_tsumo, tiles, furo)
+        await matcher.send(msg)
+    else:
+        msg = await render_shanten(result, tiles)
+        await matcher.send(msg)

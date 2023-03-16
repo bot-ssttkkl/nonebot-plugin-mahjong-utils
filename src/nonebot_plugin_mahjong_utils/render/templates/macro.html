@@ -1,0 +1,19 @@
+{% macro tiles_view(tiles, size='normal', style='') -%}
+<div class="tiles" style="{{ style }}">
+    {% for t in tiles %}
+    <img class="tile-{{ size }}" src="tiles/{{ t }}.png" alt="{{ t }}"/>
+    {% endfor %}
+</div>
+{%- endmacro %}
+{% macro percentile_str(x, ndigits=2) -%}
+{{ (x * 100) | round(ndigits) }}%
+{%- endmacro %}
+{% macro shanten_text(shanten) -%}
+{% if shanten == -1 %}
+和牌
+{% elif shanten == 0 %}
+听牌
+{% else %}
+{{ shanten }}向听
+{% endif %}
+{%- endmacro %}

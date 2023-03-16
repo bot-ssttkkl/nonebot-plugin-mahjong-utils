@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>和牌分析</title>
+</head>
+<body>
+{% import "macro.html" as macro %}
+<div class="panel">
+    <div class="panel__body">
+        {{ macro.tiles_view(tiles[:-1]) }}
+        {{ macro.tiles_view([tiles[-1]], style='transform: rotate(90deg)') }}
+        {% if regular %}
+        {% for fr in furo %}
+        {{ macro.tiles_view(fr.tiles, style="margin-inline-start: 16px") }}
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% if regular %}
+<div class="panel">
+    <div class="panel__title">
+        <div class="panel__title__text">
+            手牌拆解
+        </div>
+    </div>
+    <div class="panel__body">
+        <div class="table">
+            <div class="table__content">
+                <div class="table__tr">
+                    <div class="table__td" style="flex: 3">
+                        雀头
+                    </div>
+                    <div class="table__td" style="flex: 9">
+                        {{ macro.tiles_view([pattern.jyantou, pattern.jyantou], size="small") }}
+                    </div>
+                </div>
+                {% if (pattern.menzen_mentsu | length) > 0 %}
+                <div class="table__tr">
+                    <div class="table__td" style="flex: 3">
+                        面子
+                    </div>
+                    <div class="table__td" style="flex: 9">
+                        {% for mt in pattern.menzen_mentsu %}
+                        {{ macro.tiles_view(mt.tiles, size="small", style="margin-inline-end: 16px") }}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                {% if (furo | length) > 0 %}
+                <div class="table__tr">
+                    <div class="table__td" style="flex: 3">
+                        副露
+                    </div>
+                    <div class="table__td" style="flex: 9">
+                        {% for fr in furo %}
+                        {{ macro.tiles_view(fr.tiles, size="small", style="margin-inline-end: 16px") }}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="panel">
+    <div class="panel__title">
+        <div class="panel__title__text">
+            自摸时
+        </div>
+    </div>
+    <div class="panel__body">
+        <div class="table">
+            <div class="table__content">
+                <div class="table__tr">
+                    <div class="table__td" style="flex: 3">
+                        役种
+                    </div>
+                    <div class="table__td" style="flex: 9">
+                        {% for yaku in hora_tsumo.yaku %}
+                        <span style="{% if not loop.first %}margin-inline-start: 8px{% endif %}">
+                            {{ yaku_mapping[yaku] }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="table__tr">
+                    <div class="table__td" style="flex: 3">
+                        番数
+                    </div>
+                    <div class="table__td" style="flex: 9">
+                        {% if hora_tsumo.has_yakuman %}
+                        {{ (hora_tsumo.yaku | sum(attribute='han')) // 13 }}倍役满
+                        {% else %}
+                        {{ hora_tsumo.han }}番
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="table__tr">
+                    <div class="table__td" style="flex: 3">
+                        符数
+                    </div>
+                    <div class="table__td" style="flex: 9">
+                        {{ hora_tsumo.hu }}
+                    </div>
+                </div>
+                <div class="table__tr">
+                    <div class="table__td" style="flex: 3">
+                        亲家和牌
+                    </div>
+                    <div class="table__td" style="flex: 9">
+                        子家{{ hora_tsumo.parent_point.tsumo }}点（共{{ hora_tsumo.parent_point.tsumo * 3 }}点）
+                    </div>
+                </div>
+                <div class="table__tr">
+                    <div class="table__td" style="flex: 3">
+                        子家和牌
+                    </div>
+                    <div class="table__td" style="flex: 9">
+                        亲家{{ hora_tsumo.child_point.tsumo_parent }}点，子家{{ hora_tsumo.child_point.tsumo_child }}点（共{{
+                        hora_tsumo.child_point.tsumo_parent + hora_tsumo.child_point.tsumo_child * 2 }}点）
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel">
+    <div class="panel__title">
+        <div class="panel__title__text">
+            荣和时
+        </div>
+    </div>
+    <div class="panel__body">
+        <div class="table">
+            <div class="table__content">
+                <div class="table__tr">
+                    <div class="table__td" style="flex: 3">
+                        役种
+                    </div>
+                    <div class="table__td" style="flex: 9">
+                        {% for yaku in hora_ron.yaku %}
+                        <span style="{% if not loop.first %}margin-inline-start: 8px{% endif %}">
+                            {{ yaku_mapping[yaku] }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="table__tr">
+                    <div class="table__td" style="flex: 3">
+                        番数
+                    </div>
+                    <div class="table__td" style="flex: 9">
+                        {% if hora_ron.has_yakuman %}
+                        {{ (hora_ron.yaku | sum(attribute='han')) // 13 }}倍役满
+                        {% else %}
+                        {{ hora_ron.han }}番
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="table__tr">
+                    <div class="table__td" style="flex: 3">
+                        符数
+                    </div>
+                    <div class="table__td" style="flex: 9">
+                        {{ hora_ron.hu }}
+                    </div>
+                </div>
+                <div class="table__tr">
+                    <div class="table__td" style="flex: 3">
+                        亲家和牌
+                    </div>
+                    <div class="table__td" style="flex: 9">
+                        {{ hora_ron.parent_point.ron }}点
+                    </div>
+                </div>
+                <div class="table__tr">
+                    <div class="table__td" style="flex: 3">
+                        子家和牌
+                    </div>
+                    <div class="table__td" style="flex: 9">
+                        {{ hora_ron.child_point.ron }}点
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

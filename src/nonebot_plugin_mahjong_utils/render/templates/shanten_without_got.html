@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>向听计算</title>
+</head>
+<body>
+{% import "macro.html" as macro %}
+<div class="panel">
+    <div class="panel__body">
+        {{ macro.tiles_view(tiles) }}
+        <div class="note-text">
+            未摸牌
+        </div>
+    </div>
+</div>
+<div class="panel" style="margin-top: 16px;">
+    <div class="panel__title">
+        <span class="panel__title__text">
+            {{ macro.shanten_text(result.shanten) }}
+        </span>
+    </div>
+    <div class="panel__body">
+        <div class="table">
+            <div class="table__content">
+                <div class="table__head">
+                    <div class="table__head__item" style="flex: 5">
+                        进张
+                    </div>
+                    {% if result.shanten == 1 %}
+                    <div class="table__head__item" style="flex: 4">
+                        好型进张
+                    </div>
+                    <div class="table__head__item" style="flex: 2">
+                        好型率
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="table__tr">
+                    <div class="table__td" style="flex: 5">
+                        <div style="flex-direction: column">
+                            {{ macro.tiles_view(result.advance, size='small', style="display: block;") }}
+                            <span>共{{ result.advance_num }}张</span>
+                        </div>
+                    </div>
+                    {% if result.shanten == 1 %}
+                    <div class="table__td" style="flex: 4">
+                        <div style="flex-direction: column">
+                            {{ macro.tiles_view(result.good_shape_advance, size='small', style="display: block;") }}
+                            <span>共{{ result.good_shape_advance_num }}张</span>
+                        </div>
+                    </div>
+                    <div class="table__td" style="flex: 2">
+                        {{ macro.percentile_str(result.good_shape_advance_num / result.advance_num) }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
