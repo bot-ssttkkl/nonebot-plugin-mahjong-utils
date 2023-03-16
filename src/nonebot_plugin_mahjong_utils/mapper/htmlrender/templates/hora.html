@@ -111,7 +111,7 @@
                         亲家和牌
                     </div>
                     <div class="table__td" style="flex: 9">
-                        子家{{ hora_tsumo.parent_point.tsumo }}点（共{{ hora_tsumo.parent_point.tsumo * 3 }}点）
+                        {{ get_tsumo_text(0, hora_tsumo.parent_point.tsumo, True) }}
                     </div>
                 </div>
                 <div class="table__tr">
@@ -119,8 +119,7 @@
                         子家和牌
                     </div>
                     <div class="table__td" style="flex: 9">
-                        亲家{{ hora_tsumo.child_point.tsumo_parent }}点，子家{{ hora_tsumo.child_point.tsumo_child }}点（共{{
-                        hora_tsumo.child_point.tsumo_parent + hora_tsumo.child_point.tsumo_child * 2 }}点）
+                        {{ get_tsumo_text(hora_tsumo.child_point.tsumo_parent, hora_tsumo.child_point.tsumo_child, False) }}
                     </div>
                 </div>
             </div>
@@ -173,7 +172,7 @@
                         亲家和牌
                     </div>
                     <div class="table__td" style="flex: 9">
-                        {{ hora_ron.parent_point.ron }}点
+                        {{ get_ron_text(hora_ron.parent_point.ron, True) }}
                     </div>
                 </div>
                 <div class="table__tr">
@@ -181,7 +180,7 @@
                         子家和牌
                     </div>
                     <div class="table__td" style="flex: 9">
-                        {{ hora_ron.child_point.ron }}点
+                        {{ get_ron_text(hora_ron.child_point.ron, False) }}
                     </div>
                 </div>
             </div>

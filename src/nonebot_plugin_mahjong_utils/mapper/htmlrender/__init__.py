@@ -8,6 +8,7 @@ from mahjong_utils.models.tile import Tile
 from mahjong_utils.shanten import CommonShantenResult, FuroChanceShantenResult
 
 from nonebot_plugin_mahjong_utils.mapper.plaintext.general import yaku_mapping
+from nonebot_plugin_mahjong_utils.mapper.plaintext.point_by_han_hu import get_ron_text, get_tsumo_text
 
 try:
     from nonebot_plugin_htmlrender import template_to_pic
@@ -103,7 +104,9 @@ async def render_hora(hora_ron: Hora, hora_tsumo: Hora, tiles: List[Tile], furo:
         "pattern": hora_ron.pattern,
         "hora_ron": hora_ron,
         "hora_tsumo": hora_tsumo,
-        "yaku_mapping": yaku_mapping
+        "yaku_mapping": yaku_mapping,
+        "get_ron_text": get_ron_text,
+        "get_tsumo_text": get_tsumo_text
     }
     template_name = "hora.html"
     return await _render(template_name, templates)
