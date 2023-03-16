@@ -1,14 +1,15 @@
-from typing import TextIO, Optional, Tuple, Set
+from typing import TextIO, Tuple, Set, List
 
 from mahjong_utils.hora import Hora
+from mahjong_utils.models.furo import Furo
 from mahjong_utils.models.tile import Tile
 from mahjong_utils.models.wind import Wind
 from mahjong_utils.point_by_han_hu import ParentPoint, ChildPoint
 from mahjong_utils.yaku import Yaku
 
-from nonebot_plugin_mahjong_utils.mapper.general import num_mapping, wind_mapping, yaku_mapping
-from nonebot_plugin_mahjong_utils.mapper.hand import map_hand
-from nonebot_plugin_mahjong_utils.mapper.point_by_han_hu import map_point_by_han_hu
+from nonebot_plugin_mahjong_utils.mapper.plaintext.general import num_mapping, wind_mapping, yaku_mapping
+from nonebot_plugin_mahjong_utils.mapper.plaintext.hand import map_hand
+from nonebot_plugin_mahjong_utils.mapper.plaintext.point_by_han_hu import map_point_by_han_hu
 
 
 def map_han_hu(io: TextIO, han: int, hu: int):
@@ -19,8 +20,8 @@ def map_yakuman_text(io: TextIO, yakuman: int):
     io.write(f"{num_mapping[yakuman]}倍役满")
 
 
-def map_hora_basic_info(io: TextIO, hora: Hora, *, got: Optional[Tile] = None):
-    map_hand(io, hora.pattern, got=got)
+def map_hora_basic_info(io: TextIO, hora: Hora, tiles: List[Tile], furo: List[Furo]):
+    map_hand(io, tiles, furo)
 
     if hora.dora > 0:
         io.write(f"dora{hora.dora} ")
@@ -92,13 +93,13 @@ def map_hora_yaku(
     return yakuman_ron, yakuman_tsumo
 
 
-def map_hora(io: TextIO, hora_ron: Hora, hora_tsumo: Hora, *, got: Optional[Tile] = None):
+def map_hora(io: TextIO, hora_ron: Hora, hora_tsumo: Hora, tiles: List[Tile], furo: List[Furo]):
     hora = hora_ron
 
-    map_hora_basic_info(io, hora, got=got)
+    map_hora_basic_info(io, hora, tiles, furo)
     io.write('\n')
 
-    if hora.han == 0:
+    if hora_ron.han == 0 and hora_tsumo == 0:
         io.write("和牌，但是无役")
         return
 

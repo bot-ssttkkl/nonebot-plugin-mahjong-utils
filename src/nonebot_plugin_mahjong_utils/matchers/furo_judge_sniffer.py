@@ -3,15 +3,14 @@ from typing import Sequence
 
 from mahjong_utils.models.tile import parse_tiles, Tile
 from mahjong_utils.shanten import furo_chance_shanten
-from nonebot import on_regex, Bot
+from nonebot import on_regex
 from nonebot.internal.adapter import Event
 from nonebot.internal.matcher import Matcher
-from nonebot.typing import T_State
 
 from nonebot_plugin_mahjong_utils.errors import BadRequestError
 from nonebot_plugin_mahjong_utils.interceptors.handle_error import handle_error
-from nonebot_plugin_mahjong_utils.mapper.shanten import map_furo_chance_shanten_result
-from nonebot_plugin_mahjong_utils.render import render_furo_chance
+from nonebot_plugin_mahjong_utils.mapper import send_furo_chance_shanten_result
+from nonebot_plugin_mahjong_utils.mapper.plaintext.shanten import map_furo_chance_shanten_result
 from nonebot_plugin_mahjong_utils.utils.executor import run_in_my_executor
 
 tiles_pattern = r"([0-9]+(m|p|s|z){1})+"
@@ -52,5 +51,4 @@ async def handle(event: Event, matcher: Matcher):
         raise BadRequestError(f"invalid length of hand: {len(tiles)}")
 
     result = await run_in_my_executor(furo_chance_shanten, tiles, chance_tile, tile_from == 3)
-    msg = await render_furo_chance(result, tiles, chance_tile, tile_from)
-    await matcher.send(msg)
+    await send_furo_chance_shanten_result(result, tiles, chance_tile, tile_from)

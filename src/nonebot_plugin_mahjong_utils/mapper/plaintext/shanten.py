@@ -1,10 +1,10 @@
 from collections import defaultdict
-from typing import TextIO, Optional, cast
+from typing import TextIO, cast, List
 
 from mahjong_utils.models.tile import tiles_text, Tile
 from mahjong_utils.shanten import ShantenWithoutGot, CommonShantenResult, FuroChanceShantenResult, ShantenWithFuroChance
 
-from nonebot_plugin_mahjong_utils.mapper.hand import map_hand
+from nonebot_plugin_mahjong_utils.mapper.plaintext.hand import map_hand
 
 
 def map_shanten_without_got(io: TextIO, shanten: ShantenWithoutGot):
@@ -15,8 +15,8 @@ def map_shanten_without_got(io: TextIO, shanten: ShantenWithoutGot):
         io.write(f"进张：{tiles_text(sorted(shanten.advance))} ({shanten.advance_num}张)")
 
 
-def map_common_shanten_result(io: TextIO, result: CommonShantenResult, *, got: Optional[Tile] = None):
-    map_hand(io, result.hand.patterns[0], got=got)
+def map_common_shanten_result(io: TextIO, result: CommonShantenResult, tiles: List[Tile]):
+    map_hand(io, tiles)
     io.write('\n')
 
     if not result.with_got:
@@ -76,8 +76,9 @@ def map_common_shanten_result(io: TextIO, result: CommonShantenResult, *, got: O
             io.write("（只显示最优的前10种打法）")
 
 
-def map_furo_chance_shanten_result(io: TextIO, result: FuroChanceShantenResult, chance_tile: Tile, tile_from: int):
-    map_hand(io, result.hand.patterns[0])
+def map_furo_chance_shanten_result(io: TextIO, result: FuroChanceShantenResult, tiles: List[Tile], chance_tile: Tile,
+                                   tile_from: int):
+    map_hand(io, tiles)
     if tile_from == 1:
         io.write("下家打")
     elif tile_from == 2:

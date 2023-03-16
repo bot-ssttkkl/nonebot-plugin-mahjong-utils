@@ -6,15 +6,19 @@ from mahjong_utils.hora import Hora, RegularHoraHandPattern
 from mahjong_utils.models.furo import Furo
 from mahjong_utils.models.tile import Tile
 from mahjong_utils.shanten import CommonShantenResult, FuroChanceShantenResult
-from nonebot.adapters.onebot.v11 import MessageSegment, Message
-from nonebot_plugin_htmlrender import template_to_pic
 
-from nonebot_plugin_mahjong_utils.mapper.general import yaku_mapping
+from nonebot_plugin_mahjong_utils.mapper.plaintext.general import yaku_mapping
+
+try:
+    from nonebot_plugin_htmlrender import template_to_pic
+    from nonebot_plugin_saa import MessageFactory, Image
+except ImportError as e:
+    raise Exception("请安装 nonebot-plugin-mahjong-utils[htmlrender]") from e
 
 template_path = str(Path(__file__).parent / "templates")
 
 
-async def _render(template_name: str, templates: Dict[str, Any]):
+async def _render(template_name: str, templates: Dict[str, Any]) -> MessageFactory:
     pic = await template_to_pic(
         template_path=template_path,
         template_name=template_name,
@@ -24,10 +28,10 @@ async def _render(template_name: str, templates: Dict[str, Any]):
             "viewport": {"width": 800, "height": 10}
         }
     )
-    return Message([MessageSegment.image(pic)])
+    return MessageFactory([Image(pic)])
 
 
-async def render_shanten(result: CommonShantenResult, tiles: List[Tile]) -> Message:
+async def render_common_shanten_result(result: CommonShantenResult, tiles: List[Tile]) -> MessageFactory:
     templates = {
         "tiles": tiles,
         "result": result
@@ -53,8 +57,8 @@ async def render_shanten(result: CommonShantenResult, tiles: List[Tile]) -> Mess
     return await _render(template_name, templates)
 
 
-async def render_furo_chance(result: FuroChanceShantenResult, tiles: List[Tile], chance_tile: Tile,
-                             tile_from: int) -> Message:
+async def render_furo_chance_shanten_result(result: FuroChanceShantenResult, tiles: List[Tile], chance_tile: Tile,
+                                            tile_from: int) -> MessageFactory:
     templates = {
         "tiles": tiles,
         "chance_tile": chance_tile,
@@ -91,7 +95,7 @@ async def render_furo_chance(result: FuroChanceShantenResult, tiles: List[Tile],
     return await _render(template_name, templates)
 
 
-async def render_hora(hora_ron: Hora, hora_tsumo: Hora, tiles: List[Tile], furo: List[Furo]) -> Message:
+async def render_hora(hora_ron: Hora, hora_tsumo: Hora, tiles: List[Tile], furo: List[Furo]) -> MessageFactory:
     templates = {
         "tiles": tiles,
         "furo": furo,

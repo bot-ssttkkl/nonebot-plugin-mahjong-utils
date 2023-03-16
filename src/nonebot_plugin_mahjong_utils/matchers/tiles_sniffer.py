@@ -10,7 +10,7 @@ from nonebot.internal.matcher import Matcher
 
 from nonebot_plugin_mahjong_utils.errors import BadRequestError
 from nonebot_plugin_mahjong_utils.interceptors.handle_error import handle_error
-from nonebot_plugin_mahjong_utils.render import render_shanten, render_hora
+from nonebot_plugin_mahjong_utils.mapper import send_common_shanten_result, send_hora
 from nonebot_plugin_mahjong_utils.utils.executor import run_in_my_executor
 from nonebot_plugin_mahjong_utils.utils.parser import try_parse_wind, try_parse_extra_yaku
 
@@ -82,8 +82,6 @@ async def handle(event: Event, matcher: Matcher):
             dora=dora, self_wind=self_wind, round_wind=round_wind,
             extra_yaku=extra_yaku
         )
-        msg = await render_hora(hora_ron, hora_tsumo, tiles, furo)
-        await matcher.send(msg)
+        await send_hora(hora_ron, hora_tsumo, tiles, furo)
     else:
-        msg = await render_shanten(result, tiles)
-        await matcher.send(msg)
+        await send_common_shanten_result(result, tiles)
