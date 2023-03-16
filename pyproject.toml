@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot-plugin-mahjong-utils"
-version = "0.2.7"
+version = "0.3.0"
 description = ""
 authors = ["ssttkkl <huang.wen.long@hotmail.com>"]
 readme = "README.MD"
