@@ -14,10 +14,26 @@ def map_shanten_without_got(io: TextIO, shanten: ShantenWithoutGot):
     else:
         io.write(f"进张：{tiles_text(sorted(shanten.advance))} ({shanten.advance_num}张)")
 
+    if shanten.improvement:
+        io.write("\n改良：")
+
+        improvement = []
+
+        for t in shanten.improvement:
+            imp = t, [x.discard for x in shanten.improvement[t]], shanten.improvement[t][0].advance_num
+            improvement.append(imp)
+
+        improvement.sort(key=lambda x: x[0])
+
+        for i, (t, discard, advance_num) in enumerate(improvement):
+            io.write(f"{t}（打{'/'.join(map(str, discard))}，听{advance_num}张）")
+            if i != len(improvement) - 1:
+                io.write("\n")
+
 
 def map_common_shanten_result(io: TextIO, result: CommonShantenResult, tiles: List[Tile]):
     map_hand(io, tiles)
-    io.write('\n')
+    io.write('\n\n')
 
     if not result.with_got:
         if result.shanten == -1:
@@ -86,7 +102,7 @@ def map_furo_chance_shanten_result(io: TextIO, result: FuroChanceShantenResult, 
     elif tile_from == 3:
         io.write("上家打")
     io.write(str(chance_tile))
-    io.write('\n')
+    io.write('\n\n')
 
     grouped_shanten = defaultdict(dict)
 

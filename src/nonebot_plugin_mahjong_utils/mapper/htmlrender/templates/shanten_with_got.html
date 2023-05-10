@@ -28,9 +28,17 @@
                 <div class="table__head">
                     <div class="table__head__item" style="flex: 3">
                     </div>
-                    <div class="table__head__item" style="flex: {% if shanten_num == 1 %} 4 {% else %} 9 {% endif %}">
+
+                    <div class="table__head__item" style="flex: {% if shanten_num == 1 or shanten_num == 0 %} 4 {% else %} 9 {% endif %}">
                         进张
                     </div>
+
+                    {% if shanten_num == 0 %}
+                    <div class="table__head__item" style="flex: 5">
+                        改良
+                    </div>
+                    {% endif %}
+                    
                     {% if shanten_num == 1 %}
                     <div class="table__head__item" style="flex: 3">
                         好型进张
@@ -40,31 +48,41 @@
                     </div>
                     {% endif %}
                 </div>
-                {% for action, shanten_after_discard in shanten %}
+                {% for action, shanten_after_action in shanten %}
                 <div class="table__tr">
                     <div class="table__td" style="flex: 3">
                         {% if action[0] == 'discard' %}
-                        打
+                        <span>打</span>
                         {% elif action[0] == 'ankan' %}
-                        暗杠
+                        <span>暗杠</span>
                         {% endif %}
                         {{ macro.tiles_view([action[1]], size='small') }}
                     </div>
-                    <div class="table__td" style="flex: {% if shanten_num == 1 %} 4 {% else %} 9 {% endif %}">
+
+                    <div class="table__head__item" style="flex: {% if shanten_num == 1 or shanten_num == 0 %} 4 {% else %} 9 {% endif %}">
                         <div style="flex-direction: column">
-                            {{ macro.tiles_view(shanten_after_discard.advance, size='small', style="display: block;") }}
-                            <span>共{{ shanten_after_discard.advance_num }}张</span>
+                            {{ macro.tiles_view(shanten_after_action.advance, size='small', style="display: block;") }}
+                            <span>共{{ shanten_after_action.advance_num }}张</span>
                         </div>
                     </div>
+
+                    {% if shanten_num == 0 %}
+                    <div class="table__td" style="flex: 5">
+                        <div style="flex-direction: column">
+                            {{ macro.render_improvement(shanten_after_action.improvement, shanten_after_action.improvement_num, convert_improvement_view) }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
                     {% if shanten_num == 1 %}
                     <div class="table__td" style="flex: 3">
                         <div style="flex-direction: column">
-                            {{ macro.tiles_view(shanten_after_discard.good_shape_advance, size='small', style="display: block;") }}
-                            <span>共{{ shanten_after_discard.good_shape_advance_num }}张</span>
+                            {{ macro.tiles_view(shanten_after_action.good_shape_advance, size='small', style="display: block;") }}
+                            <span>共{{ shanten_after_action.good_shape_advance_num }}张</span>
                         </div>
                     </div>
                     <div class="table__td" style="flex: 2">
-                        {{ macro.percentile_str(shanten_after_discard.good_shape_advance_num / shanten_after_discard.advance_num) }}
+                        {{ macro.percentile_str(shanten_after_action.good_shape_advance_num / shanten_after_action.advance_num) }}
                     </div>
                     {% endif %}
                 </div>

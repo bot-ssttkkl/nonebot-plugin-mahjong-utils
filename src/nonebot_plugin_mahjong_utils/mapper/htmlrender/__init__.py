@@ -36,14 +36,44 @@ async def _render(template_name: str, templates: Dict[str, Any]) -> MessageFacto
     return MessageFactory([Image(pic)])
 
 
+def convert_improvement_view(improvement):
+    imp = []
+
+    for t in improvement:
+        imp.append({
+            "tile": t,
+            "discard": [x.discard for x in improvement[t]],
+            "advance_num": improvement[t][0].advance_num
+        })
+
+    imp.sort(key=lambda x: x["tile"])
+
+    return imp
+
+
 async def render_common_shanten_result(result: CommonShantenResult, tiles: List[Tile]) -> MessageFactory:
     templates = {
         "tiles": tiles,
-        "result": result
+        "result": result,
+        "convert_improvement_view": convert_improvement_view
     }
 
     if not result.with_got:
         template_name = "shanten_without_got.html"
+        if result.improvement is not None:
+            improvement = []
+
+            for t in result.improvement:
+                imp = {
+                    "tile": t,
+                    "discard": [x.discard for x in result.improvement[t]],
+                    "advance_num": result.improvement[t][0].advance_num
+                }
+                improvement.append(imp)
+
+            improvement.sort(key=lambda x: x["tile"])
+
+            templates['improvement'] = improvement
     else:
         template_name = "shanten_with_got.html"
 
@@ -68,7 +98,8 @@ async def render_furo_chance_shanten_result(result: FuroChanceShantenResult, til
         "tiles": tiles,
         "chance_tile": chance_tile,
         "tile_from": tile_from,
-        "result": result
+        "result": result,
+        "convert_improvement_view": convert_improvement_view
     }
     template_name = "shanten_with_furo_chance.html"
 

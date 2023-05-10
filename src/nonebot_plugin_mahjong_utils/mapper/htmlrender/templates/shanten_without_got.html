@@ -28,6 +28,13 @@
                     <div class="table__head__item" style="flex: 5">
                         进张
                     </div>
+
+                    {% if result.shanten == 0 %}
+                    <div class="table__head__item" style="flex: 4">
+                        改良
+                    </div>
+                    {% endif %}
+
                     {% if result.shanten == 1 %}
                     <div class="table__head__item" style="flex: 4">
                         好型进张
@@ -44,6 +51,15 @@
                             <span>共{{ result.advance_num }}张</span>
                         </div>
                     </div>
+
+                    {% if result.shanten == 0 %}
+                    <div class="table__td" style="flex: 4">
+                        <div style="flex-direction: column">
+                            {{ macro.render_improvement(result.improvement, result.improvement_num, convert_improvement_view) }}
+                        </div>
+                    </div>
+                    {% endif %}
+
                     {% if result.shanten == 1 %}
                     <div class="table__td" style="flex: 4">
                         <div style="flex-direction: column">

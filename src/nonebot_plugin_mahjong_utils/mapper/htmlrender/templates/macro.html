@@ -11,9 +11,11 @@
     {% endif %}
 </div>
 {%- endmacro %}
+
 {% macro percentile_str(x, ndigits=2) -%}
 {{ (x * 100) | round(ndigits) }}%
 {%- endmacro %}
+
 {% macro shanten_text(shanten) -%}
 {% if shanten == -1 %}
 和牌
@@ -22,4 +24,18 @@
 {% else %}
 {{ shanten }}向听
 {% endif %}
+{%- endmacro %}
+
+{% macro render_improvement(improvement, improvement_num, convert_improvement_view) -%}
+{% for imp in convert_improvement_view(improvement) %}
+    <ul>
+        <li style="display: block; width: 100%;">
+        {{ tiles_view([imp["tile"]], size='small') }}
+        <span>（打</span>
+        {{ tiles_view(imp["discard"], size='tiny') }}
+        <span>，听{{ imp["advance_num"] }}张）</span>
+        </li>
+    </ul>
+{% endfor %}
+<span>共{{ improvement_num }}张</span>
 {%- endmacro %}

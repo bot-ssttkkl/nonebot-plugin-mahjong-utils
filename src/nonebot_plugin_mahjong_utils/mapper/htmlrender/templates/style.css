@@ -13,6 +13,11 @@
     height: 50.4px;
 }
 
+.tile-tiny {
+    width: 28px;
+    height: 39.2px;
+}
+
 .tiles {
     display: inline-block;
     word-break: break-all;
