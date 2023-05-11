@@ -14,12 +14,12 @@ def map_shanten_without_got(io: TextIO, shanten: ShantenWithoutGot):
     else:
         io.write(f"进张：{tiles_text(sorted(shanten.advance))} ({shanten.advance_num}张)")
 
-    if shanten.improvement:
-        io.write("\n改良：")
+    if shanten.good_shape_improvement:
+        io.write("\n好型改良：")
 
         improvement = []
 
-        for t in shanten.improvement:
+        for t in shanten.good_shape_improvement:
             imp = t, [x.discard for x in shanten.improvement[t]], shanten.improvement[t][0].advance_num
             improvement.append(imp)
 

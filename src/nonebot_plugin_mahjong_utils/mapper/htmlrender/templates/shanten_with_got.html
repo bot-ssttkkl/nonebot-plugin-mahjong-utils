@@ -35,7 +35,7 @@
 
                     {% if shanten_num == 0 %}
                     <div class="table__head__item" style="flex: 5">
-                        改良
+                        好型改良
                     </div>
                     {% endif %}
                     
@@ -59,7 +59,7 @@
                         {{ macro.tiles_view([action[1]], size='small') }}
                     </div>
 
-                    <div class="table__head__item" style="flex: {% if shanten_num == 1 or shanten_num == 0 %} 4 {% else %} 9 {% endif %}">
+                    <div class="table__td" style="flex: {% if shanten_num == 1 or shanten_num == 0 %} 4 {% else %} 9 {% endif %}">
                         <div style="flex-direction: column">
                             {{ macro.tiles_view(shanten_after_action.advance, size='small', style="display: block;") }}
                             <span>共{{ shanten_after_action.advance_num }}张</span>
@@ -69,7 +69,7 @@
                     {% if shanten_num == 0 %}
                     <div class="table__td" style="flex: 5">
                         <div style="flex-direction: column">
-                            {{ macro.render_improvement(shanten_after_action.improvement, shanten_after_action.improvement_num, convert_improvement_view) }}
+                            {{ macro.render_improvement(shanten_after_action.good_shape_improvement, shanten_after_action.good_shape_improvement_num, convert_improvement_view) }}
                         </div>
                     </div>
                     {% endif %}

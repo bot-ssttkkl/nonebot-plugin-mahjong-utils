@@ -31,7 +31,7 @@
 
                     {% if result.shanten == 0 %}
                     <div class="table__head__item" style="flex: 4">
-                        改良
+                        好型改良
                     </div>
                     {% endif %}
 
@@ -55,7 +55,7 @@
                     {% if result.shanten == 0 %}
                     <div class="table__td" style="flex: 4">
                         <div style="flex-direction: column">
-                            {{ macro.render_improvement(result.improvement, result.improvement_num, convert_improvement_view) }}
+                            {{ macro.render_improvement(result.good_shape_improvement, result.good_shape_improvement_num, convert_improvement_view) }}
                         </div>
                     </div>
                     {% endif %}
