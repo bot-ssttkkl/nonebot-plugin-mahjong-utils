@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import TextIO, cast, List
+from typing import TextIO, cast, List, Sequence
 
 from mahjong_utils.models.tile import tiles_text, Tile
 from mahjong_utils.shanten import ShantenWithoutGot, CommonShantenResult, FuroChanceShantenResult, ShantenWithFuroChance
@@ -92,8 +92,8 @@ def map_common_shanten_result(io: TextIO, result: CommonShantenResult, tiles: Li
             io.write("（只显示最优的前10种打法）")
 
 
-def map_furo_chance_shanten_result(io: TextIO, result: FuroChanceShantenResult, tiles: List[Tile], chance_tile: Tile,
-                                   tile_from: int):
+def map_furo_chance_shanten_result(io: TextIO, result: FuroChanceShantenResult, tiles: Sequence[Tile],
+                                   chance_tile: Tile, tile_from: int):
     map_hand(io, tiles)
     if tile_from == 1:
         io.write("下家打")

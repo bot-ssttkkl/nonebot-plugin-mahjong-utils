@@ -22,7 +22,7 @@ furo_judge_sniffer = on_regex(rf"^{tiles_pattern}(\^|\<|\>){chance_tile_pattern}
 def to_msg(tiles: Sequence[Tile], chance_tile: Tile, tile_from: int):
     result = furo_chance_shanten(tiles, chance_tile, tile_from == 3)
     with StringIO() as sio:
-        map_furo_chance_shanten_result(sio, result, chance_tile, tile_from)
+        map_furo_chance_shanten_result(sio, result, tiles, chance_tile, tile_from)
 
         msg = sio.getvalue().strip()
         return msg
