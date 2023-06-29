@@ -32,7 +32,7 @@
         <div class="table">
             <div class="table__content">
                 <div class="table__head">
-                    <div class="table__head__item" style="flex: 3">
+                    <div class="table__head__item" style="flex: 4">
                     </div>
                     
                     <div class="table__head__item" style="flex: {% if shanten_num == 1 or shanten_num == 0 %} 4 {% else %} 9 {% endif %}">
@@ -46,21 +46,18 @@
                     {% endif %}
                     
                     {% if shanten_num == 1 %}
-                    <div class="table__head__item" style="flex: 3">
+                    <div class="table__head__item" style="flex: 4">
                         好型进张
-                    </div>
-                    <div class="table__head__item" style="flex: 2">
-                        好型率
                     </div>
                     {% endif %}
                 </div>
                 {% for action, shanten_after_action in shanten %}
                 <div class="table__tr">
-                    <div class="table__td" style="flex: 3">
+                    <div class="table__td" style="flex: 4">
                         {% if action[0] == 'pass' %}
                         PASS
                         {% elif action[0] == 'chi' %}
-                        {{ macro.tiles_view(action[1].tiles) }}吃打{{ macro.tiles_view([action[2]]) }}
+                        {{ macro.tiles_view([action[1].first, action[1].second]) }}吃打{{ macro.tiles_view([action[2]]) }}
                         {% elif action[0] == 'pon' %}
                         碰打{{ macro.tiles_view([action[1]]) }}
                         {% elif action[0] == 'minkan' %}
@@ -84,14 +81,11 @@
                     {% endif %}
                     
                     {% if shanten_num == 1 %}
-                    <div class="table__td" style="flex: 3">
+                    <div class="table__td" style="flex: 4">
                         <div style="flex-direction: column">
                             {{ macro.tiles_view(shanten_after_action.good_shape_advance, size='small', style="display: block;") }}
-                            <span>共{{ shanten_after_action.good_shape_advance_num }}张</span>
+                            <span>共{{ shanten_after_action.good_shape_advance_num }}张（{{ macro.percentile_str(shanten_after_action.good_shape_advance_num / shanten_after_action.advance_num) }}）</span>
                         </div>
-                    </div>
-                    <div class="table__td" style="flex: 2">
-                        {{ macro.percentile_str(shanten_after_action.good_shape_advance_num / shanten_after_action.advance_num) }}
                     </div>
                     {% endif %}
                 </div>

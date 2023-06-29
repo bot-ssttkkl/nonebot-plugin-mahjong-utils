@@ -39,9 +39,6 @@
                     <div class="table__head__item" style="flex: 4">
                         好型进张
                     </div>
-                    <div class="table__head__item" style="flex: 2">
-                        好型率
-                    </div>
                     {% endif %}
                 </div>
                 <div class="table__tr">
@@ -64,11 +61,8 @@
                     <div class="table__td" style="flex: 4">
                         <div style="flex-direction: column">
                             {{ macro.tiles_view(result.good_shape_advance, size='small', style="display: block;") }}
-                            <span>共{{ result.good_shape_advance_num }}张</span>
+                            <span>共{{ result.good_shape_advance_num }}张（{{ macro.percentile_str(result.good_shape_advance_num / result.advance_num) }}）</span>
                         </div>
-                    </div>
-                    <div class="table__td" style="flex: 2">
-                        {{ macro.percentile_str(result.good_shape_advance_num / result.advance_num) }}
                     </div>
                     {% endif %}
                 </div>
