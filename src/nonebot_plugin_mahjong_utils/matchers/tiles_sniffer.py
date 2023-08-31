@@ -6,13 +6,13 @@ from mahjong_utils.models.tile import parse_tiles, Tile
 from mahjong_utils.shanten import shanten
 from nonebot import on_regex
 from nonebot.internal.adapter import Event
-from nonebot.internal.matcher import Matcher
+from ssttkkl_nonebot_utils.errors.errors import BadRequestError
+from ssttkkl_nonebot_utils.interceptor.handle_error import handle_error
+from ssttkkl_nonebot_utils.interceptor.with_handling_reaction import with_handling_reaction
 
-from nonebot_plugin_mahjong_utils.errors import BadRequestError
-from nonebot_plugin_mahjong_utils.interceptors.handle_error import handle_error
-from nonebot_plugin_mahjong_utils.mapper import send_common_shanten_result, send_hora
-from nonebot_plugin_mahjong_utils.utils.executor import run_in_my_executor
-from nonebot_plugin_mahjong_utils.utils.parser import try_parse_wind, try_parse_extra_yaku
+from ..mapper import send_common_shanten_result, send_hora
+from ..utils.executor import run_in_my_executor
+from ..utils.parser import try_parse_wind, try_parse_extra_yaku
 
 tiles_pattern = r"([0-9]+(m|p|s|z){1})+"
 furo_pattern = r"[0-9]+(m|p|s|z){1}"
@@ -21,8 +21,9 @@ tiles_sniffer = on_regex(rf"^{tiles_pattern}(\s{furo_pattern})*(\s.*)*$")
 
 
 @tiles_sniffer.handle()
-@handle_error(tiles_sniffer, True)
-async def handle(event: Event, matcher: Matcher):
+@handle_error(silently=True)
+@with_handling_reaction()
+async def handle(event: Event):
     text = event.get_plaintext().split(' ')
 
     tiles = parse_tiles(text[0])

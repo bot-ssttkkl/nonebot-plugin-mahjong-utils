@@ -5,6 +5,10 @@ nonebot-plugin-mahjong-utils
 @License        : MIT
 @GitHub         : https://github.com/ssttkkl/nonebot-plugin-mahjong-utils
 """
+from nonebot import require
+
+require("nonebot_plugin_saa")
+require("ssttkkl_nonebot_utils")
 
 from nonebot.plugin import PluginMetadata
 
@@ -25,7 +29,7 @@ __plugin_meta__ = PluginMetadata(
     description='手牌分析、番符点数查询、……',
     usage=__usage__,
     type="application",
-    homepage="https://github.com/ssttkkl/nonebot-plugin-mahjong-utils",
+    homepage="https://github.com/bot-ssttkkl/nonebot-plugin-mahjong-utils",
     config=Config,
     supported_adapters=None
 )

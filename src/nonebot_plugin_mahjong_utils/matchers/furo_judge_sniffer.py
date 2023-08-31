@@ -5,13 +5,13 @@ from mahjong_utils.models.tile import parse_tiles, Tile
 from mahjong_utils.shanten import furo_chance_shanten
 from nonebot import on_regex
 from nonebot.internal.adapter import Event
-from nonebot.internal.matcher import Matcher
+from ssttkkl_nonebot_utils.errors.errors import BadRequestError
+from ssttkkl_nonebot_utils.interceptor.handle_error import handle_error
+from ssttkkl_nonebot_utils.interceptor.with_handling_reaction import with_handling_reaction
 
-from nonebot_plugin_mahjong_utils.errors import BadRequestError
-from nonebot_plugin_mahjong_utils.interceptors.handle_error import handle_error
-from nonebot_plugin_mahjong_utils.mapper import send_furo_chance_shanten_result
-from nonebot_plugin_mahjong_utils.mapper.plaintext.shanten import map_furo_chance_shanten_result
-from nonebot_plugin_mahjong_utils.utils.executor import run_in_my_executor
+from ..mapper import send_furo_chance_shanten_result
+from ..mapper.plaintext.shanten import map_furo_chance_shanten_result
+from ..utils.executor import run_in_my_executor
 
 tiles_pattern = r"([0-9]+(m|p|s|z){1})+"
 chance_tile_pattern = r"([0-9](m|p|s|z){1})"
@@ -29,8 +29,9 @@ def to_msg(tiles: Sequence[Tile], chance_tile: Tile, tile_from: int):
 
 
 @furo_judge_sniffer.handle()
-@handle_error(furo_judge_sniffer, True)
-async def handle(event: Event, matcher: Matcher):
+@handle_error(silently=True)
+@with_handling_reaction()
+async def handle(event: Event):
     text = event.get_plaintext()
     if '>' in text:
         tiles, chance_tile = event.get_plaintext().split('>')

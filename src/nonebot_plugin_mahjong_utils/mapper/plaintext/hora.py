@@ -4,9 +4,9 @@ from mahjong_utils.hora import Hora, RegularHoraHandPattern
 from mahjong_utils.models.furo import Furo
 from mahjong_utils.models.tile import Tile
 
-from nonebot_plugin_mahjong_utils.mapper.plaintext.general import num_mapping, wind_mapping, yaku_mapping
-from nonebot_plugin_mahjong_utils.mapper.plaintext.hand import map_hand
-from nonebot_plugin_mahjong_utils.mapper.plaintext.point_by_han_hu import get_tsumo_text, get_ron_text
+from .general import num_mapping, wind_mapping, yaku_mapping
+from .hand import map_hand
+from .point_by_han_hu import get_tsumo_text, get_ron_text
 
 
 def map_yakuman_text(io: TextIO, yakuman: int):

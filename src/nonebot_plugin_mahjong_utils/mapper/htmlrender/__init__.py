@@ -7,16 +7,14 @@ from mahjong_utils.models.furo import Furo
 from mahjong_utils.models.tile import Tile
 from mahjong_utils.shanten import CommonShantenResult, FuroChanceShantenResult
 from nonebot import require
+from nonebot_plugin_saa import MessageFactory, Image
 
-from nonebot_plugin_mahjong_utils.mapper.plaintext.general import yaku_mapping
-from nonebot_plugin_mahjong_utils.mapper.plaintext.point_by_han_hu import get_ron_text, get_tsumo_text
+from ..plaintext.general import yaku_mapping
+from ..plaintext.point_by_han_hu import get_ron_text, get_tsumo_text
 
 try:
     require("nonebot_plugin_htmlrender")
     from nonebot_plugin_htmlrender import template_to_pic
-
-    require("nonebot_plugin_saa")
-    from nonebot_plugin_saa import MessageFactory, Image
 except Exception as e:
     raise Exception("请安装 nonebot-plugin-mahjong-utils[htmlrender]") from e
 

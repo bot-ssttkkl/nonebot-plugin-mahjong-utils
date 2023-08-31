@@ -4,7 +4,7 @@ from typing import TextIO, cast, List, Sequence
 from mahjong_utils.models.tile import tiles_text, Tile
 from mahjong_utils.shanten import ShantenWithoutGot, CommonShantenResult, FuroChanceShantenResult, ShantenWithFuroChance
 
-from nonebot_plugin_mahjong_utils.mapper.plaintext.hand import map_hand
+from .hand import map_hand
 
 
 def map_shanten_without_got(io: TextIO, shanten: ShantenWithoutGot):
