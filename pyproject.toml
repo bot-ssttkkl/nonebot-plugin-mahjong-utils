@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot-plugin-mahjong-utils"
-version = "0.4.4"
+version = "0.4.5"
 description = ""
 authors = ["ssttkkl <huang.wen.long@hotmail.com>"]
 readme = "README.MD"
@@ -13,7 +13,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.9"
 nonebot2 = "^2.0.0"
-mahjong-utils = "^0.5.1"
+mahjong-utils = "^0.6.1"
 nonebot-plugin-htmlrender = { version = "^0.2.0.3", optional = true }
 nonebot-plugin-send-anything-anywhere = { version = ">=0.3.0", optional = true }
 ssttkkl-nonebot-utils = "^0.1.6"
@@ -23,7 +23,7 @@ htmlrender = ["nonebot-plugin-htmlrender", "nonebot-plugin-send-anything-anywher
 
 [tool.poetry.group.dev.dependencies]
 nonebot-adapter-qqguild = "^0.2.5"
-nonebot2 = {extras = ["httpx"], version = "^2.0.1"}
+nonebot2 = {extras = ["httpx", "websockets"], version = "^2.0.1"}
 
 [build-system]
 requires = ["poetry-core"]
