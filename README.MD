@@ -55,7 +55,7 @@ nonebot-plugin-mahjong-utils
 
 目前本插件是以动态库形式调用[mahjong-utils](https://github.com/ssttkkl/mahjong-utils)的Native产物，实测在我的云服务器上对于已摸牌的一向听手牌，每次计算耗时约为1s上下。如果需要速度优化，可选切换为以HTTP形式调用JVM产物，计算耗时能降低到原来的50%左右。
 
-安装Java环境（Java 11以上）。然后从 https://github.com/ssttkkl/mahjong-utils/releases/tag/v0.6.0 下载mahjong-utils-webapi-all.jar文件，放置到你的bot根目录即可。
+安装Java环境（Java 11以上）。然后从 https://github.com/ssttkkl/mahjong-utils/releases/tag/v0.6.5 下载mahjong-utils-webapi-all.jar文件，放置到你的bot根目录即可。
 
 ## 配置项
 
