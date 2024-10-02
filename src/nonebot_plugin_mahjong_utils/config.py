@@ -7,7 +7,7 @@ from pydantic import BaseSettings
 
 
 class Config(BaseSettings):
-    mahjong_utils_send_image: bool = False
+    mahjong_utils_send_image: bool = True
     mahjong_utils_webapi_jar: Optional[str]
 
     class Config:

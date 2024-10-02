@@ -22,4 +22,4 @@ async def handle(matched_groups=RegexGroup()):
     except ValueError:
         raise BadRequestError("请输入正确的番符数目")
 
-    await send_point_by_han_hu(parent_point, child_point)
+    await send_point_by_han_hu(han, hu, parent_point, child_point)
