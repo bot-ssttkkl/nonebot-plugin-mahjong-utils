@@ -1,4 +1,3 @@
-import random
 from typing import TYPE_CHECKING
 
 from nonebug.mixin.call_api import ApiContext

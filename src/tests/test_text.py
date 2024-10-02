@@ -1,7 +1,6 @@
 import pytest
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.message import handle_event
-
 from nonebug import App
 
 from tests.utils import mock_obv11_message_event, create_obv11_bot

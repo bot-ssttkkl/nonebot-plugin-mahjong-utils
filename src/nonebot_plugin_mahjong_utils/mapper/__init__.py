@@ -10,8 +10,7 @@ from nonebot_plugin_saa import Text, MessageFactory, Image
 
 from .plaintext.point_by_han_hu import map_point_by_han_hu
 from ..config import conf
-
-last_sent: dict = {"text": None, "img": None}
+from .sent_store import last_sent
 
 
 async def _send_text(text: str):
