@@ -12,4 +12,7 @@ def load_bot():
     # 加载插件
     plugins = nonebot.load_plugins("nonebot_plugin_mahjong_utils")
 
+    from nonebot_plugin_mahjong_utils.config import conf
+    conf.mahjong_utils_test = True
+
     return plugins

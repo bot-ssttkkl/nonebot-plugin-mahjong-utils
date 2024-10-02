@@ -10,6 +10,8 @@ class Config(BaseSettings):
     mahjong_utils_send_image: bool = True
     mahjong_utils_webapi_jar: Optional[str]
 
+    mahjong_utils_test: bool = False
+
     class Config:
         extra = "ignore"
 

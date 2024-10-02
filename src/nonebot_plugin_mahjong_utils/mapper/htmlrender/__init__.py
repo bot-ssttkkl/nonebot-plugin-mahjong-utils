@@ -21,8 +21,8 @@ except Exception as e:
 template_path = str(Path(__file__).parent / "templates")
 
 
-async def _render(template_name: str, templates: Dict[str, Any]) -> MessageFactory:
-    pic = await template_to_pic(
+async def _render(template_name: str, templates: Dict[str, Any]) -> bytes:
+    return await template_to_pic(
         template_path=template_path,
         template_name=template_name,
         templates=templates,
@@ -31,7 +31,6 @@ async def _render(template_name: str, templates: Dict[str, Any]) -> MessageFacto
             "viewport": {"width": 800, "height": 10}
         }
     )
-    return MessageFactory([Image(pic)])
 
 
 def convert_improvement_view(improvement):
@@ -49,7 +48,7 @@ def convert_improvement_view(improvement):
     return imp
 
 
-async def render_common_shanten_result(result: CommonShantenResult, tiles: List[Tile]) -> MessageFactory:
+async def render_common_shanten_result(result: CommonShantenResult, tiles: List[Tile]) -> bytes:
     templates = {
         "tiles": tiles,
         "result": result,
@@ -91,7 +90,7 @@ async def render_common_shanten_result(result: CommonShantenResult, tiles: List[
 
 
 async def render_furo_chance_shanten_result(result: FuroChanceShantenResult, tiles: List[Tile], chance_tile: Tile,
-                                            tile_from: int) -> MessageFactory:
+                                            tile_from: int) -> bytes:
     templates = {
         "tiles": tiles,
         "chance_tile": chance_tile,
@@ -129,7 +128,7 @@ async def render_furo_chance_shanten_result(result: FuroChanceShantenResult, til
     return await _render(template_name, templates)
 
 
-async def render_hora(hora_ron: Hora, hora_tsumo: Hora, tiles: List[Tile], furo: List[Furo]) -> MessageFactory:
+async def render_hora(hora_ron: Hora, hora_tsumo: Hora, tiles: List[Tile], furo: List[Furo]) -> bytes:
     templates = {
         "tiles": tiles,
         "furo": furo,

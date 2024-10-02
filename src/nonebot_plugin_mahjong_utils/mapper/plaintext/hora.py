@@ -32,9 +32,9 @@ def map_regular_hora_hand_pattern(io: TextIO, pattern: RegularHoraHandPattern):
     io.write("手牌拆解：\n")
     io.write(f"  雀头：{pattern.jyantou}{pattern.jyantou}\n")
     if pattern.menzen_mentsu:
-        io.write(f"  面子：{' '.join(map(lambda x: str(x), pattern.menzen_mentsu))}\n")
+        io.write(f"  面子：{' '.join(sorted(map(lambda x: str(x), pattern.menzen_mentsu)))}\n")
     if pattern.furo:
-        io.write(f"  副露：{' '.join(map(lambda x: str(x), pattern.furo))}\n")
+        io.write(f"  副露：{' '.join(sorted(map(lambda x: str(x), pattern.furo)))}\n")
 
 
 def map_han_hu(io: TextIO, hora: Hora):
@@ -57,7 +57,7 @@ def map_hora(io: TextIO, hora_ron: Hora, hora_tsumo: Hora, tiles: List[Tile], fu
     if hora_tsumo == 0:
         io.write("  和牌，但是无役\n")
     else:
-        io.write(f"  役种：{' '.join(map(lambda x: yaku_mapping[x], hora_tsumo.yaku))}\n")
+        io.write(f"  役种：{' '.join(sorted(map(lambda x: yaku_mapping[x], hora_tsumo.yaku)))}\n")
         map_han_hu(io, hora_tsumo)
         io.write(f"  亲家和牌：{get_tsumo_text(0, hora_tsumo.parent_point.tsumo, True)}\n")
         io.write(
@@ -69,7 +69,7 @@ def map_hora(io: TextIO, hora_ron: Hora, hora_tsumo: Hora, tiles: List[Tile], fu
     if hora_ron == 0:
         io.write("  和牌，但是无役\n")
     else:
-        io.write(f"  役种：{' '.join(map(lambda x: yaku_mapping[x], hora_ron.yaku))}\n")
+        io.write(f"  役种：{' '.join(sorted(map(lambda x: yaku_mapping[x], hora_ron.yaku)))}\n")
         map_han_hu(io, hora_ron)
         io.write(f"  亲家和牌：{get_ron_text(hora_ron.parent_point.ron, True)}\n")
         io.write(f"  子家和牌：{get_ron_text(hora_ron.child_point.ron, False)}\n")

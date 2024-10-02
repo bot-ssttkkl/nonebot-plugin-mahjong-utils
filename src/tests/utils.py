@@ -1,14 +1,14 @@
 import random
 from typing import TYPE_CHECKING
 
-from nonebug.mixin.process import MatcherContext
+from nonebug.mixin.call_api import ApiContext
 
 if TYPE_CHECKING:
     from nonebot.adapters.onebot.v11 import Message as OB11Message
     from nonebot.adapters.onebot.v11 import Bot as OB11Bot
 
 
-def create_obv11_bot(ctx: MatcherContext) -> "OB11Bot":
+def create_obv11_bot(ctx: ApiContext) -> "OB11Bot":
     from nonebot import get_adapter
     from nonebot.adapters.onebot.v11 import Adapter as OB11Adapter
     from nonebot.adapters.onebot.v11 import Bot as OB11Bot
