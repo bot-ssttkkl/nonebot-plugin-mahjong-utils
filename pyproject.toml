@@ -24,6 +24,8 @@ pytest = "^8.3.3"
 nonebug = "^0.3.7"
 pytest-asyncio = "^0.24.0"
 nonebot-adapter-onebot = "^2.4.5"
+opencv-python = "^4.10.0.84"
+scikit-image = "^0.24.0"
 
 [build-system]
 requires = ["poetry-core"]
