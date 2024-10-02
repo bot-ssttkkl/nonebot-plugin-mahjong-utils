@@ -13,7 +13,9 @@ nonebot-plugin-mahjong-utils
 
 计算向听数与进张。一向听的手牌还会计算好型与愚型进张数。
 
-![shanten_without_got](img/shanten_without_got.png)
+![shanten_1233334679m_input.png](img%2Fshanten_1233334679m_input.png)
+
+![shanten_1233334679m.jpg](img%2Fshanten_1233334679m.jpg)
 
 #### 牌理（已摸牌状态）
 
@@ -21,9 +23,9 @@ nonebot-plugin-mahjong-utils
 
 对每种打法（包括打出与暗杠）计算向听数与进张。一向听的手牌还会计算好型与愚型进张数。
 
-![shanten_with_got_1](img/shanten_with_got_1.png)
+![shanten_34567778m123457p_input.png](img%2Fshanten_34567778m123457p_input.png)
 
-![shanten_with_got_2](img/shanten_with_got_2.png)
+![shanten_34567778m123457p.png](img%2Fshanten_34567778m123457p.png)
 
 #### 副露分析（未摸牌状态+他家打出的牌）
 
@@ -33,11 +35,9 @@ nonebot-plugin-mahjong-utils
 
 对每种打法（包括吃、碰、大明杠与PASS）计算向听数与进张。一向听的手牌还会计算好型与愚型进张数。
 
-![furo_shanten_1](img/furo_shanten_1.png)
+![furo_335678m3457p_7m_input.png](img%2Ffuro_335678m3457p_7m_input.png)
 
-![furo_shanten_2](img/furo_shanten_2.png)
-
-![furo_shanten_3](img/furo_shanten_3.png)
+![furo_335678m3457p_7m.jpg](img%2Ffuro_335678m3457p_7m.jpg)
 
 #### 和牌分析
 
@@ -45,25 +45,23 @@ nonebot-plugin-mahjong-utils
 
 手牌代码的最后一张牌作为所和的牌，手牌代码后可通过空格分割输入副露、自风、场风、dora、额外役。暗杠通过0990m的格式输入。
 
-![hora_1](img/hora_1.png)
+![hora_11123456789999p_input.png](img%2Fhora_11123456789999p_input.png)
+
+![hora_11123456789999p.jpg](img%2Fhora_11123456789999p.jpg)
 
 ### 番符点数查询
 
 - 输入x番y符，输出亲家/子家的自摸/荣和得点
-
-## 速度优化
-
-目前本插件是以动态库形式调用[mahjong-utils](https://github.com/ssttkkl/mahjong-utils)的Native产物，实测在我的云服务器上对于已摸牌的一向听手牌，每次计算耗时约为1s上下。如果需要速度优化，可选切换为以HTTP形式调用JVM产物，计算耗时能降低到原来的50%左右。
-
-安装Java环境（Java 11以上）。然后从 https://github.com/ssttkkl/mahjong-utils/releases/tag/v0.6.5 下载mahjong-utils-webapi-all.jar文件，放置到你的bot根目录即可。
+- 
+![3han40hu.png](img%2F3han40hu.png)
 
 ## 配置项
 
 ### mahjong_utils_send_image
 
-将结果以图片形式发送（若将此项设置为True，请安装nonebot-plugin-mahjong-utils[htmlrender]以安装必需依赖）
+将结果以图片形式发送，设置为False可节省图片渲染和发送时间，提高响应速度
 
-默认值：`False`
+默认值：`True`
 
 ## Special Thanks
 

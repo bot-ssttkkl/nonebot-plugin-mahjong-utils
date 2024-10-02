@@ -2,36 +2,42 @@ from collections import defaultdict
 from pathlib import Path
 from typing import List, Dict, Any
 
+import jinja2
 from mahjong_utils.hora import Hora, RegularHoraHandPattern
 from mahjong_utils.models.furo import Furo
 from mahjong_utils.models.tile import Tile
 from mahjong_utils.shanten import CommonShantenResult, FuroChanceShantenResult
 from nonebot import require
-from nonebot_plugin_saa import MessageFactory, Image
 
+from ..sent_store import last_sent
 from ..plaintext.general import yaku_mapping
 from ..plaintext.point_by_han_hu import get_ron_text, get_tsumo_text
+from ...config import conf
 
 try:
     require("nonebot_plugin_htmlrender")
-    from nonebot_plugin_htmlrender import template_to_pic
+    from nonebot_plugin_htmlrender import template_to_pic, html_to_pic
 except Exception as e:
     raise Exception("请安装 nonebot-plugin-mahjong-utils[htmlrender]") from e
 
 template_path = str(Path(__file__).parent / "templates")
+template_env = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(template_path),
+    enable_async=True,
+)
 
 
-async def _render(template_name: str, templates: Dict[str, Any]) -> MessageFactory:
-    pic = await template_to_pic(
-        template_path=template_path,
-        template_name=template_name,
-        templates=templates,
-        pages={
-            "base_url": f"file://{template_path}",
-            "viewport": {"width": 800, "height": 10}
-        }
+async def _render(template_name: str, templates: Dict[str, Any]) -> bytes:
+    template = template_env.get_template(template_name)
+    html = await template.render_async(**templates)
+    if conf.mahjong_utils_test:
+        last_sent["html"] = html
+    return await html_to_pic(
+        template_path=f"file://{template_path}",
+        html=html,
+        base_url=f"file://{template_path}",
+        viewport={"width": 800, "height": 10}
     )
-    return MessageFactory([Image(pic)])
 
 
 def convert_improvement_view(improvement):
@@ -49,7 +55,7 @@ def convert_improvement_view(improvement):
     return imp
 
 
-async def render_common_shanten_result(result: CommonShantenResult, tiles: List[Tile]) -> MessageFactory:
+async def render_common_shanten_result(result: CommonShantenResult, tiles: List[Tile]) -> bytes:
     templates = {
         "tiles": tiles,
         "result": result,
@@ -91,7 +97,7 @@ async def render_common_shanten_result(result: CommonShantenResult, tiles: List[
 
 
 async def render_furo_chance_shanten_result(result: FuroChanceShantenResult, tiles: List[Tile], chance_tile: Tile,
-                                            tile_from: int) -> MessageFactory:
+                                            tile_from: int) -> bytes:
     templates = {
         "tiles": tiles,
         "chance_tile": chance_tile,
@@ -129,7 +135,7 @@ async def render_furo_chance_shanten_result(result: FuroChanceShantenResult, til
     return await _render(template_name, templates)
 
 
-async def render_hora(hora_ron: Hora, hora_tsumo: Hora, tiles: List[Tile], furo: List[Furo]) -> MessageFactory:
+async def render_hora(hora_ron: Hora, hora_tsumo: Hora, tiles: List[Tile], furo: List[Furo]) -> bytes:
     templates = {
         "tiles": tiles,
         "furo": furo,
