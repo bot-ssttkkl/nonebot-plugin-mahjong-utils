@@ -63,6 +63,10 @@ nonebot-plugin-mahjong-utils
 
 默认值：`True`
 
+## 优化计算用时
+
+参考：[https://github.com/ssttkkl/mahjong-utils/blob/main/python-lib/README.md#%E6%8C%87%E5%AE%9A%E7%BB%91%E5%AE%9A%E6%96%B9%E5%BC%8F]
+
 ## Special Thanks
 
 -  [nonebot/nonebot2](https://github.com/nonebot/nonebot2)
