@@ -23,7 +23,7 @@ dependencies = [
     "ssttkkl-nonebot-utils<1.0.0,>=0.1.22",
 ]
 requires-python = "<4.0,>=3.9"
-readme = "README.MD"
+readme = {file = "README.MD", content-type = "text/markdown"}
 license = {text = "MIT"}
 
 [project.urls]
