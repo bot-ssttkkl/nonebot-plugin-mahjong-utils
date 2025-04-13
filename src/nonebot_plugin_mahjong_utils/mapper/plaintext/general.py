@@ -1,23 +1,11 @@
-from mahjong_utils.models.wind import Wind
-from mahjong_utils.yaku.common import *
 from mahjong_utils.yaku.extra import *
+from mahjong_utils.yaku.common import *
 from mahjong_utils.yaku.yakuman import *
+from mahjong_utils.models.wind import Wind
 
-num_mapping = {
-    1: "一",
-    2: "两",
-    3: "三",
-    4: "四",
-    5: "五",
-    6: "六"
-}
+num_mapping = {1: "一", 2: "两", 3: "三", 4: "四", 5: "五", 6: "六"}
 
-wind_mapping = {
-    Wind.east: "东",
-    Wind.south: "南",
-    Wind.west: "西",
-    Wind.north: "北"
-}
+wind_mapping = {Wind.east: "东", Wind.south: "南", Wind.west: "西", Wind.north: "北"}
 
 yaku_mapping = {
     tsumo: "门清自摸",
@@ -64,5 +52,5 @@ yaku_mapping = {
     daisushi: "大四喜",
     churen_nine_waiting: "纯正九莲宝灯",
     suanko_tanki: "四暗刻单骑",
-    kokushi_thirteen_waiting: "国士无双十三面"
+    kokushi_thirteen_waiting: "国士无双十三面",
 }

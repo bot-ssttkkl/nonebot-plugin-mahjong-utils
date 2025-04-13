@@ -1,8 +1,8 @@
 from typing import Optional
 
-from mahjong_utils.models.wind import Wind
 from mahjong_utils.yaku import Yaku
 from mahjong_utils.yaku.extra import *
+from mahjong_utils.models.wind import Wind
 
 
 def try_parse_wind(text: str) -> Optional[Wind]:
