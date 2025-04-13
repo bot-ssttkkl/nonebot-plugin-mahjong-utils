@@ -12,18 +12,14 @@ dependencies = [
     "nonebot-plugin-send-anything-anywhere>=0.3.0",
     "ssttkkl-nonebot-utils<1.0.0,>=0.1.22",
     "nonebot-plugin-alconna>=0.57.2",
+    "mahjong-detector>=0.0.1"
 ]
-requires-python = "<4.0,>=3.9"
+requires-python = "<3.13,>=3.10"
 readme = {file = "README.MD", content-type = "text/markdown"}
 license = {text = "MIT"}
 
 [project.urls]
 repository = "https://github.com/ssttkkl/nonebot-plugin-mahjong-utils"
-
-[project.optional-dependencies]
-img = [
-    "tflite-runtime>=2.18.0",
-]
 
 [dependency-groups]
 dev = [

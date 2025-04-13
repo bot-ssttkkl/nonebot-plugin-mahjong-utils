@@ -1,8 +1,11 @@
 import re
+from typing import Optional
 
+from mahjong_utils.yaku import Yaku
 from nonebot import logger, on_regex
 from mahjong_utils.shanten import shanten
 from mahjong_utils.models.furo import Furo
+from mahjong_utils.models.wind import Wind
 from nonebot.internal.adapter import Event
 from mahjong_utils.models.tile import Tile, parse_tiles
 from mahjong_utils.hora import build_hora_from_shanten_result
@@ -53,6 +56,27 @@ async def handle_msg_for_pairi(text: str):
             if yaku is not None:
                 extra_yaku.add(yaku)
 
+    await handle_pairi(
+        tiles,
+        furo,
+        dora=dora,
+        self_wind=self_wind,
+        round_wind=round_wind,
+        extra_yaku=extra_yaku,
+        ignore_short_hand=True,
+    )
+
+
+async def handle_pairi(
+    tiles: list[Tile],
+    furo: list[Furo],
+    *,
+    dora: int = 0,
+    self_wind: Optional[Wind] = None,
+    round_wind: Optional[Wind] = None,
+    extra_yaku: Optional[set[Yaku]] = None,
+    ignore_short_hand: bool = False,
+):
     if len(tiles) % 3 == 0:
         raise BadRequestError(f"invalid length of hand: {len(tiles)}")
 
@@ -61,7 +85,7 @@ async def handle_msg_for_pairi(text: str):
     else:
         got = None
 
-    if len(furo) == 0 and len(tiles) < 3:
+    if ignore_short_hand and len(furo) == 0 and len(tiles) < 3:
         # 少于三张牌不进行计算
         return
 

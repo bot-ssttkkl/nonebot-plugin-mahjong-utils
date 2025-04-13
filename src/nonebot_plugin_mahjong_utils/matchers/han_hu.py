@@ -40,7 +40,7 @@ if conf.mahjong_utils_sniff_mode:
 
 
 if conf.mahjong_utils_command_mode:
-    han_hu_command_matcher = on_command("日麻番符算点")
+    han_hu_command_matcher = on_command("日麻番符算点", aliases={"番符"})
     command_service.patch_matcher(han_hu_command_matcher)
 
     @han_hu_command_matcher.handle()
