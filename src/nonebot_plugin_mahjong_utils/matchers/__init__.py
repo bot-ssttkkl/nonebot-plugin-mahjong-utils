@@ -1,3 +1,4 @@
-from . import furo_judge_sniffer
-from . import han_hu
-from . import tiles_sniffer
+from . import pairi  # noqa
+from . import han_hu  # noqa
+from . import furo_pairi  # noqa
+from . import tiles_analyse  # noqa

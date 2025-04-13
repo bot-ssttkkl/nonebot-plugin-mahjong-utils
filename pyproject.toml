@@ -1,13 +1,3 @@
-[tool.pdm]
-distribution = true
-
-[tool.pdm.build]
-includes = ["src/nonebot_plugin_mahjong_utils"]
-[build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
-
-
 [project]
 name = "nonebot-plugin-mahjong-utils"
 version = "0.4.7"
@@ -21,6 +11,7 @@ dependencies = [
     "nonebot-plugin-htmlrender<1.0.0.0,>=0.2.0.3",
     "nonebot-plugin-send-anything-anywhere>=0.3.0",
     "ssttkkl-nonebot-utils<1.0.0,>=0.1.22",
+    "nonebot-plugin-alconna>=0.57.2",
 ]
 requires-python = "<4.0,>=3.9"
 readme = {file = "README.MD", content-type = "text/markdown"}
@@ -29,6 +20,11 @@ license = {text = "MIT"}
 [project.urls]
 repository = "https://github.com/ssttkkl/nonebot-plugin-mahjong-utils"
 
+[project.optional-dependencies]
+img = [
+    "tflite-runtime>=2.18.0",
+]
+
 [dependency-groups]
 dev = [
     "nonebot2[httpx,websockets]<3.0.0,>=2.0.1",
@@ -36,4 +32,45 @@ dev = [
     "nonebug<1.0.0,>=0.3.7",
     "pytest-asyncio<1.0.0,>=0.24.0",
     "nonebot-adapter-onebot<3.0.0,>=2.4.5",
+    "tflite-runtime @ file:///Users/huangwenlong/Downloads/tflite_runtime-2.18.0-cp312-cp312-macosx_15_0_arm64.whl",
+    "ruff<1.0.0,>=0.0.275",
+    "isort<6.0.0,>=5.10.1",
+    "black<24.0.0,>=23.1.0",
+    "pre-commit<4.0.0,>=3.1.0",
 ]
+
+[tool.black]
+line-length = 88
+target-version = ["py38", "py39", "py310", "py311"]
+include = '\.pyi?$'
+extend-exclude = '''
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+length_sort = true
+skip_gitignore = true
+force_sort_within_sections = true
+extra_standard_library = ["typing_extensions"]
+
+[tool.ruff]
+lint.select = ["E", "W", "F", "UP", "C", "T", "PYI", "PT", "Q"]
+lint.ignore = ["C901", "E402", "F403", "T201"]
+
+line-length = 160
+target-version = "py38"
+
+[tool.ruff.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.build]
+includes = ["src/nonebot_plugin_mahjong_utils"]
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
