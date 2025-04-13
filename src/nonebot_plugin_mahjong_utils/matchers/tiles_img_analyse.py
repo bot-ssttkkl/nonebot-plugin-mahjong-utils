@@ -7,11 +7,12 @@ from ssttkkl_nonebot_utils.interceptor.with_handling_reaction import (
     with_handling_reaction,
 )
 from nonebot_plugin_alconna import (
+    AlconnaMatch,
     Args,
     Image,
     Alconna,
-    Arparma,
-    AlconnaMatches,
+    Match,
+    image_fetch,
     on_alconna,
 )
 
@@ -33,8 +34,9 @@ character_tile_mapping = {
 
 if conf.mahjong_utils_command_mode:
     tiles_img_analyse_command_matcher = on_alconna(
-        Alconna("日麻手牌分析", Args["tiles", Image]),
+        Alconna("日麻手牌分析", Args["img", Image]),
         aliases={"牌理"},
+        use_cmd_start=True,
         priority=1,
         block=True,
     )
@@ -43,9 +45,8 @@ if conf.mahjong_utils_command_mode:
     @tiles_img_analyse_command_matcher.handle()
     @handle_error()
     @with_handling_reaction()
-    async def _(result: Arparma = AlconnaMatches()):
-        img = result.query[Image]("tiles")
-        tiles = await run_in_my_executor(detect_tiles, img)
+    async def _(img: Match[bytes] = AlconnaMatch("img", image_fetch)):
+        tiles = await run_in_my_executor(detect_tiles, img.result)
         tiles = [character_tile_mapping.get(t, t) for t in tiles]
         tiles = [Tile.by_text(t) for t in tiles]
 

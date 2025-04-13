@@ -24,15 +24,17 @@ repository = "https://github.com/ssttkkl/nonebot-plugin-mahjong-utils"
 
 [dependency-groups]
 dev = [
-    "nonebot2[fastapi]>=2.4.2",
+    "nonebot2[httpx]>=2.4.2",
     "pytest<9.0.0,>=8.3.3",
     "nonebug<1.0.0,>=0.3.7",
     "pytest-asyncio<1.0.0,>=0.24.0",
-    "nonebot-adapter-onebot<3.0.0,>=2.4.5",
+    "nonebot-adapter-onebot>=2.4.6",
     "ruff<1.0.0,>=0.0.275",
     "isort<6.0.0,>=5.10.1",
     "black<24.0.0,>=23.1.0",
     "pre-commit<4.0.0,>=3.1.0",
+    "nb-cli>=1.4.2",
+    "nonebot-plugin-htmlrender==0.6.0",
 ]
 
 [tool.black]
@@ -66,6 +68,10 @@ distribution = true
 
 [tool.pdm.build]
 includes = ["src/nonebot_plugin_mahjong_utils"]
+
+[tool.nonebot]
+adapters = [{name = "OneBot V11", module_name = "nonebot.adapters.onebot.v11"}]
+plugins = ["nonebot_plugin_mahjong_utils"]
 
 [build-system]
 requires = ["pdm-backend"]
