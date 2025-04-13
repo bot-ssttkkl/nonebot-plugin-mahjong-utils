@@ -78,7 +78,7 @@ async def handle_pairi(
     ignore_short_hand: bool = False,
 ):
     if len(tiles) % 3 == 0:
-        raise BadRequestError(f"invalid length of hand: {len(tiles)}")
+        raise BadRequestError("手牌数量不合法")
 
     if len(tiles) % 3 == 2:
         got = tiles[-1]

@@ -52,6 +52,9 @@ if conf.mahjong_utils_command_mode:
         logger.debug(f"tiles detect result: {tiles}")
 
         if tiles:
-            await handle_pairi(tiles, [])
+            try:
+                await handle_pairi(tiles, [])
+            except BadRequestError as e:
+                raise BadRequestError(f"{e.message}，从图片检测到的手牌为{tiles}")
         else:
             raise BadRequestError("未识别到麻将牌")
