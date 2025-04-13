@@ -46,7 +46,9 @@ __plugin_meta__ = PluginMetadata(
     type="application",
     homepage="https://github.com/bot-ssttkkl/nonebot-plugin-mahjong-utils",
     config=Config,
-    supported_adapters=inherit_supported_adapters("nonebot_plugin_alconna", "nonebot_plugin_saa"),
+    supported_adapters=inherit_supported_adapters(
+        "nonebot_plugin_alconna", "nonebot_plugin_saa"
+    ),
 )
 
 from . import matchers  # noqa
