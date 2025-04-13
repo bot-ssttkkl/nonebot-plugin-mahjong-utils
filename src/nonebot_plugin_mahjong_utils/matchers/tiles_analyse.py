@@ -14,7 +14,9 @@ from .pairi import pairi_pattern, handle_msg_for_pairi
 from .furo_pairi import furo_pairi_pattern, handle_msg_for_furo_pairi
 
 if conf.mahjong_utils_command_mode:
-    tiles_analyse_command_matcher = on_command("日麻手牌分析", aliases={"牌理"})
+    tiles_analyse_command_matcher = on_command(
+        "日麻手牌分析", aliases={"牌理"}, priority=10
+    )
     command_service.patch_matcher(tiles_analyse_command_matcher)
 
     @tiles_analyse_command_matcher.handle()

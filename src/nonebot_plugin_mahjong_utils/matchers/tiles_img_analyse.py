@@ -33,7 +33,10 @@ character_tile_mapping = {
 
 if conf.mahjong_utils_command_mode:
     tiles_img_analyse_command_matcher = on_alconna(
-        Alconna("日麻手牌分析", Args["tiles", Image]), aliases={"牌理"}
+        Alconna("日麻手牌分析", Args["tiles", Image]),
+        aliases={"牌理"},
+        priority=1,
+        block=True,
     )
     command_service.patch_matcher(tiles_img_analyse_command_matcher)
 
