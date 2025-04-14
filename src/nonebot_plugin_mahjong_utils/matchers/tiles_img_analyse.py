@@ -1,4 +1,5 @@
 from io import BytesIO
+
 from nonebot import logger
 from mahjong_detector import detect_tiles
 from mahjong_utils.models.tile import Tile
