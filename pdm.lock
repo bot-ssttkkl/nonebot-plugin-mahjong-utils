@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = []
 lock_version = "4.5.0"
-content_hash = "sha256:549c0d9085e264fe29f7489959ac73609d4d8e6980fde638d2deef9efa4e9428"
+content_hash = "sha256:a7fd96d77aedd9fbaa58447e564b650134dca09d9e5ba06d516e1ca3a67787dc"
 
 [[metadata.targets]]
 requires_python = ">=3.10,<3.13"
@@ -590,17 +590,17 @@ files = [
 
 [[package]]
 name = "mahjong-detector"
-version = "0.0.4"
+version = "0.0.6"
 requires_python = ">=3.9"
 summary = "Detect mahjong tiles from image"
 dependencies = [
     "Pillow>=11.2.1",
     "numpy>=2.2.4",
-    "onnxruntime>=1.21.0",
+    "onnxruntime>=1.19.0",
 ]
 files = [
-    {file = "mahjong_detector-0.0.4-py3-none-any.whl", hash = "sha256:7a893de156bde89305771cdea9d8c9381ac0eb14e565592264a338e148b3d8d8"},
-    {file = "mahjong_detector-0.0.4.tar.gz", hash = "sha256:0376dd4f20b493b4c53ccdef687aad86fc7bf151e088b9c604368127be836d5e"},
+    {file = "mahjong_detector-0.0.6-py3-none-any.whl", hash = "sha256:f47639492a55a1adc64bb1f21c0b33c7412fa37b14ffb3411906532bbfa2313d"},
+    {file = "mahjong_detector-0.0.6.tar.gz", hash = "sha256:d87c0f3d065eabeb2d490079805109faa4488e297002b474402d8995038253b9"},
 ]
 
 [[package]]

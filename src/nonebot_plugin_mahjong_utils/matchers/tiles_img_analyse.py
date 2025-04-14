@@ -1,3 +1,4 @@
+from io import BytesIO
 from nonebot import logger
 from mahjong_detector import detect_tiles
 from mahjong_utils.models.tile import Tile
@@ -46,7 +47,7 @@ if conf.mahjong_utils_command_mode:
     @handle_error()
     @with_handling_reaction()
     async def _(img: Match[bytes] = AlconnaMatch("img", image_fetch)):
-        tiles = await run_in_my_executor(detect_tiles, img.result)
+        tiles = await run_in_my_executor(detect_tiles, BytesIO(img.result))
         tiles = [character_tile_mapping.get(t, t) for t in tiles]
         tiles = [Tile.by_text(t) for t in tiles]
 

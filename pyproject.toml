@@ -12,7 +12,7 @@ dependencies = [
     "nonebot-plugin-send-anything-anywhere>=0.3.0",
     "ssttkkl-nonebot-utils<1.0.0,>=0.1.22",
     "nonebot-plugin-alconna>=0.57.2",
-    "mahjong-detector>=0.0.4",
+    "mahjong-detector>=0.0.6",
     "nonebot-plugin-access-control-api>=1.2.1"
 ]
 requires-python = "<3.13,>=3.10"
