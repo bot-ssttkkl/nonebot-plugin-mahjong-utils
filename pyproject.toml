@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-mahjong-utils"
-version = "0.4.8b1"
+version = "0.5.0b1"
 description = ""
 authors = [
     {name = "ssttkkl", email = "huang.wen.long@hotmail.com"},
