@@ -25,6 +25,7 @@ from ..ac import command_service
 
 try:
     from mahjong_detector import detect_tiles
+
     MAHJONG_DETECTOR_AVAILABLE = True
 except:
     MAHJONG_DETECTOR_AVAILABLE = False
