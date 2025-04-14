@@ -26,7 +26,7 @@ detect = ["mahjong-detector>=0.0.6"]
 
 [dependency-groups]
 dev = [
-    "nonebot2[httpx]>=2.4.2",
+    "nonebot2[fastapi]>=2.4.2",
     "pytest<9.0.0,>=8.3.3",
     "nonebug<1.0.0,>=0.3.7",
     "pytest-asyncio<1.0.0,>=0.24.0",
