@@ -1,11 +1,32 @@
 nonebot-plugin-mahjong-utils
 ========
 
+## 安装
+
+```shell
+nb plugin install nonebot-plugin-mahjong-utils
+```
+
+如果需要麻将牌截图识别功能，需要额外安装：
+
+```shell
+pip install nonebot-plugin-mahjong-utils[detect]
+```
+
 ## 功能
 
 ### 手牌分析
 
+`/牌理 <手牌代码> [...附加选项]`
+
 - 输入手牌代码，根据输入手牌输出向听数（未摸牌状态）、牌理（已摸牌、未和牌状态）、副露分析（未摸牌状态+他家打出的牌）或和牌分析（已摸牌、已和牌状态）。
+
+- 开启嗅探模式时（默认开启），可直接输入手牌代码：`<手牌代码> [...附加选项]`
+
+- 支持图像识别模式，从截图中识别手牌进行计算。
+只保证对雀魂截图的识别率 ~~因为训练模型只喂了雀魂截图~~ 。效果如下图所示：
+
+![shanten_img_detect.png](img/shanten_img_detect.png)
 
 #### 向听数分析（未摸牌状态）
 
@@ -51,8 +72,12 @@ nonebot-plugin-mahjong-utils
 
 ### 番符点数查询
 
+`/番符 <x>番<y>符`
+
 - 输入x番y符，输出亲家/子家的自摸/荣和得点
-- 
+
+- 开启嗅探模式时（默认开启），可直接输入番符数目：`<x>番<y>符`
+
 ![3han40hu.png](img%2F3han40hu.png)
 
 ## 配置项
@@ -60,6 +85,18 @@ nonebot-plugin-mahjong-utils
 ### mahjong_utils_send_image
 
 将结果以图片形式发送，设置为False可节省图片渲染和发送时间，提高响应速度
+
+默认值：`True`
+
+### mahjong_utils_sniff_mode
+
+开启嗅探模式，支持直接输入手牌代码触发指令
+
+默认值：`True`
+
+### mahjong_utils_command_mode
+
+开启指令模式，支持通过指令方式触发指令
 
 默认值：`True`
 

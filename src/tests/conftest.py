@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 
-import nonebot
 import pytest
+import nonebot
 from nonebot.adapters.onebot.v11 import Adapter
 
 
@@ -21,10 +21,14 @@ def load_bot():
     nonebot.load_plugin("ssttkkl_nonebot_utils")
 
     from ssttkkl_nonebot_utils.platform import platform_func
-    platform_func.register(Adapter.get_name(), "handling_reaction", fake_handling_reaction)
+
+    platform_func.register(
+        Adapter.get_name(), "handling_reaction", fake_handling_reaction
+    )
 
     # 加载插件
     nonebot.load_plugin("nonebot_plugin_mahjong_utils")
 
     from nonebot_plugin_mahjong_utils.config import conf
+
     conf.mahjong_utils_test = True

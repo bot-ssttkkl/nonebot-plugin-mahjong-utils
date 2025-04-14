@@ -1,7 +1,7 @@
 from typing import TextIO, Optional, Sequence
 
 from mahjong_utils.models.furo import Furo
-from mahjong_utils.models.tile import tiles_text, Tile
+from mahjong_utils.models.tile import Tile, tiles_text
 
 
 def map_hand(io: TextIO, tiles: Sequence[Tile], furo: Optional[Sequence[Furo]] = None):
@@ -12,9 +12,9 @@ def map_hand(io: TextIO, tiles: Sequence[Tile], furo: Optional[Sequence[Furo]] =
         tiles = sorted(tiles)
 
     io.write(tiles_text(tiles))
-    io.write(' ')
+    io.write(" ")
 
     if furo:
         for fr in furo:
             io.write(str(fr))
-            io.write(' ')
+            io.write(" ")
