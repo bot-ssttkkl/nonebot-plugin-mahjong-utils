@@ -1,7 +1,6 @@
 from io import BytesIO
 
 from nonebot import logger
-from mahjong_detector import detect_tiles
 from mahjong_utils.models.tile import Tile
 from ssttkkl_nonebot_utils.errors.errors import BadRequestError
 from ssttkkl_nonebot_utils.interceptor.handle_error import handle_error
@@ -24,6 +23,12 @@ from ..config import conf
 from .pairi import handle_pairi
 from ..ac import command_service
 
+try:
+    from mahjong_detector import detect_tiles
+    MAHJONG_DETECTOR_AVAILABLE = True
+except:
+    MAHJONG_DETECTOR_AVAILABLE = False
+
 character_tile_mapping = {
     "tou": "1z",
     "nan": "2z",
@@ -34,7 +39,7 @@ character_tile_mapping = {
     "chun": "7z",
 }
 
-if conf.mahjong_utils_command_mode:
+if MAHJONG_DETECTOR_AVAILABLE and conf.mahjong_utils_command_mode:
     tiles_img_analyse_command_matcher = on_alconna(
         Alconna("日麻手牌分析", Args["img", Image]),
         aliases={"牌理"},

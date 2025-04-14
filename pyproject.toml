@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-mahjong-utils"
-version = "0.4.7"
+version = "0.4.8b1"
 description = ""
 authors = [
     {name = "ssttkkl", email = "huang.wen.long@hotmail.com"},
@@ -12,7 +12,6 @@ dependencies = [
     "nonebot-plugin-send-anything-anywhere>=0.3.0",
     "ssttkkl-nonebot-utils<1.0.0,>=0.1.22",
     "nonebot-plugin-alconna>=0.57.2",
-    "mahjong-detector>=0.0.6",
     "nonebot-plugin-access-control-api>=1.2.1"
 ]
 requires-python = "<3.13,>=3.10"
@@ -21,6 +20,9 @@ license = {text = "MIT"}
 
 [project.urls]
 repository = "https://github.com/ssttkkl/nonebot-plugin-mahjong-utils"
+
+[project.optional-dependencies]  # This is optional dependencies
+detect = ["mahjong-detector>=0.0.6"]
 
 [dependency-groups]
 dev = [
